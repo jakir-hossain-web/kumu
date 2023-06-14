@@ -367,7 +367,7 @@
                 label: 'Monthly Sales',
                 data: [6, 9, 15, 5, 2, 3, 13, 9, 3, 5, 8, 3],
                 backgroundColor: [
-                    '#e83e8c',
+                    'red',
                 ],
                 borderWidth: 1
             }]
