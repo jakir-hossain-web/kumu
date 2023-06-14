@@ -338,7 +338,7 @@
                 data: [12, 19, 8, 5, 9, 8, 14],
                 backgroundColor: [
                     'blue',
-                    ],
+                ],
                 borderWidth: 5,
                 borderColor: ['blue'],
                 borderJoinStyle: ['round'],
@@ -366,6 +366,9 @@
             datasets: [{
                 label: 'Monthly Sales',
                 data: [6, 9, 15, 5, 2, 3, 13, 9, 3, 5, 8, 3],
+                backgroundColor: [
+                    '#e83e8c',
+                ],
                 borderWidth: 1
             }]
             },
