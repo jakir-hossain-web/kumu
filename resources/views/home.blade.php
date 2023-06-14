@@ -335,7 +335,7 @@
             labels: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
             datasets: [{
                 label: 'Current Weekly Sales',
-                data: [12, 19, 3, 5, 2, 3, 8],
+                data: [12, 19, 8, 5, 9, 8, 14],
                 backgroundColor: [
                     'blue',
                     ],
@@ -365,7 +365,7 @@
             labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
             datasets: [{
                 label: 'Monthly Sales',
-                data: [6, 9, 3, 5, 2, 3, 8, 9, 3, 5, 2, 3],
+                data: [6, 9, 15, 5, 2, 3, 13, 9, 3, 5, 8, 3],
                 borderWidth: 1
             }]
             },
