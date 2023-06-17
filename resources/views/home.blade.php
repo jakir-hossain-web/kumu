@@ -318,7 +318,10 @@
              <canvas id="weekly_sales_chart"></canvas>
         </div>
         <div class="col-lg-12 mt-4">
-             <canvas id="monthly_sales_chart"></canvas>
+             <canvas id="compare_weekly_sales_chart"></canvas>
+        </div>
+        <div class="col-lg-12 mt-4">
+             <canvas id="monthly_sales_chart" style="color: #0202ff33"></canvas>
         </div>
     </div>
 
@@ -332,25 +335,94 @@
         new Chart(weekly_sales_chart, {
             type: 'line',
             data: {
-            labels: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-            datasets: [{
-                label: 'Current Weekly Sales',
-                data: [12, 19, 8, 5, 9, 8, 14],
-                backgroundColor: [
-                    'blue',
-                ],
-                borderWidth: 5,
-                borderColor: ['blue'],
-                borderJoinStyle: ['round'],
-                tension: 0.1,
-            }]
+                labels: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                datasets: [{
+                    label: 'Current Weekly Sales',
+                    data: [12, 19, 8, 5, 9, 8, 14],
+                    pointBackgroundColor: 'blue',
+                    pointBorderColor: 'blue',
+                    borderColor: '#6565f8', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#0B2A97',
+                    pointHoverBorderColor: '#0B2A97',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.1,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#0202ff33',  
+                    }
+                }]
             },
             options: {
-            scales: {
-                y: {
-                beginAtZero: true
+                scales: {
+                    y: {
+                    beginAtZero: true
+                    }
                 }
             }
+        });
+    </script>
+
+{{-- compare weekly sales report --}}
+    <script>
+        const compare_weekly_sales_chart = document.getElementById('compare_weekly_sales_chart');
+        new Chart(compare_weekly_sales_chart, {
+            type: 'line',
+            data: {
+                labels: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                datasets: [{
+                    // type: 'bar',
+                    // label: 'Bar Dataset',
+                    // data: [10, 20, 30, 40]
+                    label: 'Current Weekly Sales',
+                    data: [12, 19, 8, 5, 9, 8, 14],
+                    pointBackgroundColor: 'blue',
+                    pointBorderColor: 'blue',
+                    borderColor: '#6565f8', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#0B2A97',
+                    pointHoverBorderColor: '#0B2A97',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.1,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#0202ff33',  
+                    }
+                }, {
+                    // type: 'line',
+                    // label: 'Line Dataset',
+                    // data: [50, 50, 50, 50],
+                    label: 'Previous Weekly Sales',
+                    data: [10, 12, 18, 15, 11, 6, 13],
+                    pointBackgroundColor: 'blue',
+                    pointBorderColor: 'blue',
+                    borderColor: '#6565f8', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#0B2A97',
+                    pointHoverBorderColor: '#0B2A97',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.1,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#0202ff33',  
+                    }
+                }],
+            },
+            options: {
+                scales: {
+                    y: {
+                    beginAtZero: true
+                    }
+                }
             }
         });
     </script>
@@ -362,19 +434,19 @@
         new Chart(monthly_sales_chart, {
             type: 'bar',
             data: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-            datasets: [{
-                label: 'Monthly Sales',
-                data: [6, 9, 15, 5, 2, 3, 13, 9, 3, 5, 8, 3],
-                borderWidth: 1
-            }]
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                datasets: [{
+                    label: 'Monthly Sales',
+                    data: [6, 9, 15, 5, 2, 3, 13, 9, 3, 5, 8, 3],
+                    borderWidth: 1
+                }]
             },
             options: {
-            scales: {
-                y: {
-                beginAtZero: true
+                scales: {
+                    y: {
+                    beginAtZero: true
+                    }
                 }
-            }
             }
         });
     </script>
