@@ -131,7 +131,6 @@ Route::get('/404', [Frontendcontroller::class, 'error_404'])->name('404');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::post('/home/custom_search', [App\Http\Controllers\HomeController::class, 'home_custom_search'])->name('home.custom_search');
 
 // users =======
 Route::get('/user', [Usercontroller::class, 'user'])->name('user');

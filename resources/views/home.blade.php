@@ -283,6 +283,7 @@
                                     fill="#FF3282" />
                             </svg>
                         </span>
+                        
                         <div class="media-body">
                             <p class=" mb-0" style="font-size: 18px">Custom Search Order</p>
                             <form action="" method="GET">
@@ -290,11 +291,11 @@
                                 <div class="custom_search d-flex justify-content-between mt-2">
                                     <div class="mb-3" style="font-size: 13px">
                                         <label for="" class="form-label">From:</label>
-                                        <input type="date" class="form-control" name="search_start_date" style="height: 40px" value="{{ old('search_start_date')}}">
+                                        <input type="date" class="form-control" name="search_start_date" style="height: 40px" value="{{$search_start_date}}">
                                     </div>
                                     <div class="mb-3" style="font-size: 13px">
                                         <label for="" class="form-label" style="cursor: pointer">To:</label>
-                                        <input type="date" class="form-control" name="search_end_date" style="height: 40px;" value="{{ old('search_end_date')}}">
+                                        <input type="date" class="form-control" name="search_end_date" style="height: 40px;" value="{{$search_end_date}}">
                                     </div>                                  
                                 </div>
                                 <div class="mb-3">
@@ -321,6 +322,19 @@
             </div>
         </div>
     </div>
+
+    <div>
+        {{$weekly_sales_datail->total}}
+    </div>
+
+    {{-- <div>
+        @php
+            use Carbon\Carbon;
+        @endphp
+        {{ Carbon::parse($search_start_date)->format('d/m/Y') }}
+    </div> --}}
+
+
 
     {{-- chart.js div --}}
     <div class="row">

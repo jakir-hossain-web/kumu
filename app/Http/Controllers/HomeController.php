@@ -24,8 +24,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request){
         $roles = Role::all();
 
         // todays order ======== 
@@ -52,6 +51,7 @@ class HomeController extends Controller
             
         $weekly_sales_number = Order::whereBetween('created_at',[$week_start_day,$week_end_day])->count();
         $weekly_sales_amount = Order::whereBetween('created_at',[$week_start_day,$week_end_day])->sum('total');
+        $weekly_sales_datails = Order::whereBetween('created_at',[$week_start_day,$week_end_day])->get()->first();
 
         // monthly sales order ======== 
         $current_month = Carbon::now()->format('F');
@@ -65,11 +65,12 @@ class HomeController extends Controller
 
         // custom search sales order ======== 
         $search_start_date = $request->search_start_date;
+        $search_start_date_with_time = $search_start_date.' 00:00:00';
         $search_end_date = $request->search_end_date;
-        $custom_search_count = Order::whereBetween('created_at', [$search_start_date, $search_end_date])->count();
-        $custom_search_total = Order::whereBetween('created_at', [$search_start_date, $search_end_date])->sum('total');
-        $custom_search_sales_number = $custom_search_count + $daily_sales_number;
-        $custom_search_sales_amount = $custom_search_total + $daily_sales_amount;
+        $search_end_date_with_time = $search_end_date.' 23:59:59';
+        $custom_search_sales_number = Order::whereBetween('created_at', [$search_start_date_with_time, $search_end_date_with_time])->count();
+        $custom_search_sales_amount = Order::whereBetween('created_at', [$search_start_date_with_time, $search_end_date_with_time])->sum('total');
+
 
 
         return view('home',[
@@ -85,24 +86,18 @@ class HomeController extends Controller
             'last_7_days_sales_amount'=>$last_7_days_sales_amount,
             'last_30_days_sales_number'=>$last_30_days_sales_number,
             'last_30_days_sales_amount'=>$last_30_days_sales_amount,
-            // 'weekly_sales'=>$weekly_sales,
+            'weekly_sales_datail'=>$weekly_sales_datails,
             'weekly_sales_number'=>$weekly_sales_number,
             'weekly_sales_amount'=>$weekly_sales_amount,
             'monthly_sales_number'=>$monthly_sales_number,
             'monthly_sales_amount'=>$monthly_sales_amount,
             'yearly_sales_number'=>$yearly_sales_number,
             'yearly_sales_amount'=>$yearly_sales_amount,
+            'search_start_date'=>$search_start_date,
+            'search_end_date'=>$search_end_date,
             'custom_search_sales_number'=>$custom_search_sales_number,
             'custom_search_sales_amount'=>$custom_search_sales_amount,
         ]);
     }
 
-    function home_custom_search(){
-        
-        // $suctom_search_sales_amount = Order::whereBetween('created_at', Carbon::today())->sum('total');
-
-        return view('home',[
-            'custom_search_sales_number'=>$custom_search_sales_number,
-        ]);
-    }
 }
