@@ -1,5 +1,15 @@
 @extends('layouts.dashboard')
 
+<style>
+    .chart_heading {
+        position: absolute;
+        top: 10px;
+        right: 38px;
+        font-size: 12px;
+        color: #575353;
+    }
+</style>
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -314,14 +324,28 @@
 
     {{-- chart.js div --}}
     <div class="row">
-        <div class="col-lg-12">
-             <canvas id="weekly_sales_chart"></canvas>
+        <div class="col-lg-12 mt-5">
+            <h6 class="chart_heading">(Figure in Lac)</h6>
+            <canvas id="weekly_sales_chart"></canvas>
+            <p class="text-center mt-2">Chart: Current Weekly Sales Report</p>
         </div>
-        <div class="col-lg-12 mt-4">
-             <canvas id="compare_weekly_sales_chart"></canvas>
+        <div class="col-lg-12 mt-5">
+            <h6 class="chart_heading">(Figure in Lac)</h6>
+            <canvas id="compare_weekly_sales_chart"></canvas>
+            <p class="text-center mt-2">Chart: Compare Weekly Sales</p>
         </div>
-        <div class="col-lg-12 mt-4">
-             <canvas id="monthly_sales_chart" style="color: #0202ff33"></canvas>
+        <div class="col-lg-12 mt-5">
+            <h6 class="chart_heading">(Figure in Lac)</h6>
+            <canvas id="monthly_sales_chart" style="color: #0202ff80"></canvas>
+            <p class="text-center mt-2">Chart: Monthly Sales Report</p>
+        </div>
+        <div class="col-lg-6 mt-5">
+            <canvas id="monthly_sales_on_payment_method_pie" style="color: #0202ff80"></canvas>
+            <p class="text-center mt-2">Chart: Monthly Sales Based on Payment Method</p>
+        </div>
+        <div class="col-lg-6 mt-5">
+            <canvas id="monthly_sales_on_payment_method_doughnut" style="color: #0202ff80"></canvas>
+            <p class="text-center mt-2">Chart: Monthly Sales Based on Payment Method</p>
         </div>
     </div>
 
@@ -337,7 +361,7 @@
             data: {
                 labels: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
                 datasets: [{
-                    label: 'Current Weekly Sales',
+                    label: 'Current Week Sales',
                     data: [12, 19, 8, 5, 9, 8, 14],
                     pointBackgroundColor: 'blue',
                     pointBorderColor: 'blue',
@@ -356,13 +380,6 @@
                     }
                 }]
             },
-            options: {
-                scales: {
-                    y: {
-                    beginAtZero: true
-                    }
-                }
-            }
         });
     </script>
 
@@ -374,10 +391,7 @@
             data: {
                 labels: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
                 datasets: [{
-                    // type: 'bar',
-                    // label: 'Bar Dataset',
-                    // data: [10, 20, 30, 40]
-                    label: 'Current Weekly Sales',
+                    label: 'Current Week Sales',
                     data: [12, 19, 8, 5, 9, 8, 14],
                     pointBackgroundColor: 'blue',
                     pointBorderColor: 'blue',
@@ -389,65 +403,87 @@
                     pointHoverRadius: 8,
                     pointHitRadius: '10', // how far mouse cursor detect the point
                     borderJoinStyle: ['round'],
-                    tension: 0.1,  // curve the line according to pointJoin
+                    tension: 0.2,  // curve the line according to pointJoin
                     fill: {  // fill the target area with color
                         target: 'origin',
                         above: '#0202ff33',  
                     }
                 }, {
-                    // type: 'line',
-                    // label: 'Line Dataset',
-                    // data: [50, 50, 50, 50],
-                    label: 'Previous Weekly Sales',
+
+                    label: 'Previous Week Sales',
                     data: [10, 12, 18, 15, 11, 6, 13],
-                    pointBackgroundColor: 'blue',
-                    pointBorderColor: 'blue',
-                    borderColor: '#6565f8', // Border color for line
+                    pointBackgroundColor: '#e83e8c',
+                    pointBorderColor: '#e83e8c',
+                    borderColor: '#e0649e', // Border color for line
                     borderWidth: 4,
                     pointRadius: 4,
-                    pointHoverBackgroundColor: '#0B2A97',
-                    pointHoverBorderColor: '#0B2A97',
+                    pointHoverBackgroundColor: '#ff0077',
+                    pointHoverBorderColor: '#ff0077',
                     pointHoverRadius: 8,
                     pointHitRadius: '10', // how far mouse cursor detect the point
                     borderJoinStyle: ['round'],
-                    tension: 0.1,  // curve the line according to pointJoin
+                    tension: 0.2,  // curve the line according to pointJoin
                     fill: {  // fill the target area with color
                         target: 'origin',
-                        above: '#0202ff33',  
+                        above: '#ee04714d',  
                     }
                 }],
             },
-            options: {
-                scales: {
-                    y: {
-                    beginAtZero: true
-                    }
-                }
-            }
         });
     </script>
 
 {{-- monthly sales report --}}
     <script>
         const monthly_sales_chart = document.getElementById('monthly_sales_chart');
-
         new Chart(monthly_sales_chart, {
             type: 'bar',
             data: {
                 labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
                 datasets: [{
                     label: 'Monthly Sales',
-                    data: [6, 9, 15, 5, 2, 3, 13, 9, 3, 5, 8, 3],
-                    borderWidth: 1
+                    data: [215000, 185049, 150585, 256650, 225566, 305620, 139955, 298525, 330055, 258865, 289950, 228850],
+                    maxBarThickness: 50,
+                    backgroundColor: '#0202ff40',
+                    borderColor: 'blue',
+                    borderWidth: 2,
+                    hoverBackgroundColor: '#0202ff80',
                 }]
             },
-            options: {
-                scales: {
-                    y: {
-                    beginAtZero: true
-                    }
-                }
-            }
+        });
+    </script>
+
+{{-- monthly sales on payment method --}}
+    <script>
+        const monthly_sales_on_payment_method_pie = document.getElementById('monthly_sales_on_payment_method_pie');
+        new Chart(monthly_sales_on_payment_method_pie, {
+            type: 'pie',
+            data: {
+                labels: ['Cash on Delivery', 'SSL Commerse', 'Stripe'],
+                datasets: [{
+                    label: 'Monthly Sales Based on Payment Method',
+                    data: [15, 12, 9],
+                    borderWidth: 0,
+                    offset: 10, // gap between every part
+                    hoverOffset: 30,  // gap between every part when hover
+                }]
+            },
+        });
+    </script>
+
+    <script>
+        const monthly_sales_on_payment_method_doughnut = document.getElementById('monthly_sales_on_payment_method_doughnut');
+        new Chart(monthly_sales_on_payment_method_doughnut, {
+            type: 'doughnut',
+            data: {
+                labels: ['Cash on Delivery', 'SSL Commerse', 'Stripe'],
+                datasets: [{
+                    label: 'Monthly Sales Based on Payment Method',
+                    data: [25, 12, 5],
+                    borderWidth: 0,
+                    offset: 10, // gap between every part
+                    hoverOffset: 30,  // gap between every part when hover
+                }]
+            },
         });
     </script>
 @endsection
