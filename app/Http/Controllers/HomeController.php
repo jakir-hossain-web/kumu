@@ -51,7 +51,7 @@ class HomeController extends Controller
             
         $weekly_sales_number = Order::whereBetween('created_at',[$week_start_day,$week_end_day])->count();
         $weekly_sales_amount = Order::whereBetween('created_at',[$week_start_day,$week_end_day])->sum('total');
-        $weekly_sales_datails = Order::whereBetween('created_at',[$week_start_day,$week_end_day])->get()->first();
+        $weekly_sales_datails = Order::whereBetween('created_at',[$week_start_day,$week_end_day])->get();
 
         // monthly sales order ======== 
         $current_month = Carbon::now()->format('F');

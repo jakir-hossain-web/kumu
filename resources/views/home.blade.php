@@ -324,7 +324,9 @@
     </div>
 
     <div>
-        {{$weekly_sales_datail->total}}
+        @foreach ($weekly_sales_datail as $weekly_sales)
+            <p>{{$weekly_sales->total}}</p>
+        @endforeach
     </div>
 
     {{-- <div>
@@ -367,6 +369,7 @@
 @endsection
 
 @section('footer_script')
+
 {{-- weekly sales report --}}
     <script>
         const weekly_sales_chart = document.getElementById('weekly_sales_chart');
@@ -500,4 +503,5 @@
             },
         });
     </script>
+    
 @endsection
