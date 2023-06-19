@@ -28,21 +28,24 @@ class HomeController extends Controller
         $roles = Role::all();
 
         // todays order ======== 
-        $current_date = Carbon::today()->format('d/m/Y');
+        $current_date = Carbon::today()->format('d/m/Y');  // to show the date on blade
         $daily_sales_number = Order::whereDate('created_at', Carbon::today())->count();
         $daily_sales_amount = Order::whereDate('created_at', Carbon::today())->sum('total');
 
         // last 7 days order ======== 
-        $start_7th_date = Carbon::today()->subDays(6)->format('d/m/Y');
+        $start_7th_date = Carbon::today()->subDays(6)->format('d/m/Y');  // to show the date on blade
         $last_7th_date = Carbon::today()->subDays(6);
         $last_7_days_sales_number = Order::where('created_at', '>=', $last_7th_date)->count();
         $last_7_days_sales_amount = Order::where('created_at', '>=', $last_7th_date)->sum('total');
+        $last_7_days_sales_details = Order::where('created_at', '>=', $last_7th_date)->get();
+        // $last_7_days_sales_details = Order::where('created_at', '>=', $last_7th_date)->groupBy('created_at')->selectRaw('sum(total) as sum, product_id')->get();
 
         // last 30 days order ======== 
-        $start_30th_date = Carbon::today()->subDays(29)->format('d/m/Y');
+        $start_30th_date = Carbon::today()->subDays(29)->format('d/m/Y');  // to show the date on blade
         $last_30th_date = Carbon::today()->subDays(29);
         $last_30_days_sales_number = Order::where('created_at', '>=', $last_30th_date)->count();
         $last_30_days_sales_amount = Order::where('created_at', '>=', $last_30th_date)->sum('total');
+        $last_30_days_sales_details = Order::where('created_at', '>=', $last_30th_date)->get();
 
         // weekly sales order ========================================
             // customize week stat & end day ===
@@ -75,24 +78,35 @@ class HomeController extends Controller
 
         return view('home',[
             'roles'=>$roles,
+
             'current_date'=>$current_date,
             'current_month'=>$current_month,
             'current_year'=>$current_year,
+
             'start_7th_date'=>$start_7th_date,
             'start_30th_date'=>$start_30th_date,
+
             'daily_sales_number'=>$daily_sales_number,
             'daily_sales_amount'=>$daily_sales_amount,
+
             'last_7_days_sales_number'=>$last_7_days_sales_number,
             'last_7_days_sales_amount'=>$last_7_days_sales_amount,
+            'last_7_days_sales_details'=>$last_7_days_sales_details,
+
             'last_30_days_sales_number'=>$last_30_days_sales_number,
             'last_30_days_sales_amount'=>$last_30_days_sales_amount,
-            'weekly_sales_datail'=>$weekly_sales_datails,
+            // 'last_30_days_sales_details'=>$last_30_days_sales_details,
+
             'weekly_sales_number'=>$weekly_sales_number,
             'weekly_sales_amount'=>$weekly_sales_amount,
+            'weekly_sales_datails'=>$weekly_sales_datails,
+
             'monthly_sales_number'=>$monthly_sales_number,
             'monthly_sales_amount'=>$monthly_sales_amount,
+
             'yearly_sales_number'=>$yearly_sales_number,
             'yearly_sales_amount'=>$yearly_sales_amount,
+
             'search_start_date'=>$search_start_date,
             'search_end_date'=>$search_end_date,
             'custom_search_sales_number'=>$custom_search_sales_number,

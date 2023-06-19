@@ -323,42 +323,44 @@
         </div>
     </div>
 
-    <div>
-        @foreach ($weekly_sales_datail as $weekly_sales)
-            <p>{{$weekly_sales->total}}</p>
-        @endforeach
-    </div>
-
-    {{-- <div>
-        @php
-            use Carbon\Carbon;
-        @endphp
-        {{ Carbon::parse($search_start_date)->format('d/m/Y') }}
-    </div> --}}
-
-
 
     {{-- chart.js div --}}
     <div class="row">
+        {{--======= Last 7 Days Sales =======--}}
+        <div class="col-lg-12 mt-5">
+            <h6 class="chart_heading">(Figure in Lac)</h6>
+            <canvas id="last_7_days_sales_chart"></canvas>
+            <p class="text-center mt-2">Chart: Last 7 Days Sales</p>
+        </div>
+
+        {{--======= Current Weekly Sales =======--}}
         <div class="col-lg-12 mt-5">
             <h6 class="chart_heading">(Figure in Lac)</h6>
             <canvas id="weekly_sales_chart"></canvas>
-            <p class="text-center mt-2">Chart: Current Weekly Sales Report</p>
+            <p class="text-center mt-2">Chart: Current Weekly Sales</p>
         </div>
+
+        {{--======= Compare Weekly Sales =======--}}
         <div class="col-lg-12 mt-5">
             <h6 class="chart_heading">(Figure in Lac)</h6>
             <canvas id="compare_weekly_sales_chart"></canvas>
             <p class="text-center mt-2">Chart: Compare Weekly Sales</p>
         </div>
+
+        {{--======= Monthly Sales =======--}}
         <div class="col-lg-12 mt-5">
             <h6 class="chart_heading">(Figure in Lac)</h6>
             <canvas id="monthly_sales_chart" style="color: #0202ff80"></canvas>
-            <p class="text-center mt-2">Chart: Monthly Sales Report</p>
+            <p class="text-center mt-2">Chart: Monthly Sales</p>
         </div>
+
+        {{--======= Monthly Sales Based on Payment Method using pie chart =======--}}
         <div class="col-lg-6 mt-5">
             <canvas id="monthly_sales_on_payment_method_pie" style="color: #0202ff80"></canvas>
             <p class="text-center mt-2">Chart: Monthly Sales Based on Payment Method</p>
         </div>
+
+        {{--======= Monthly Sales Based on Payment Method using doughnut chart =======--}}
         <div class="col-lg-6 mt-5">
             <canvas id="monthly_sales_on_payment_method_doughnut" style="color: #0202ff80"></canvas>
             <p class="text-center mt-2">Chart: Monthly Sales Based on Payment Method</p>
@@ -370,16 +372,18 @@
 
 @section('footer_script')
 
-{{-- weekly sales report --}}
+    {{-- last 7 days sales report --}}
     <script>
-        const weekly_sales_chart = document.getElementById('weekly_sales_chart');
-        new Chart(weekly_sales_chart, {
+        const last_7_days_sales_chart = document.getElementById('last_7_days_sales_chart');
+        new Chart(last_7_days_sales_chart, {
             type: 'line',
             data: {
                 labels: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
                 datasets: [{
-                    label: 'Current Week Sales',
-                    data: [12, 19, 8, 5, 9, 8, 14],
+                    label: 'Last 7 Days Sales',
+                    data: [@foreach($last_7_days_sales_details as $last_7_days_sales_details)
+                            {{$last_7_days_sales_details->total}},
+                        @endforeach],
                     pointBackgroundColor: 'blue',
                     pointBorderColor: 'blue',
                     borderColor: '#6565f8', // Border color for line
@@ -400,7 +404,39 @@
         });
     </script>
 
-{{-- compare weekly sales report --}}
+    {{-- weekly sales report --}}
+    <script>
+        const weekly_sales_chart = document.getElementById('weekly_sales_chart');
+        new Chart(weekly_sales_chart, {
+            type: 'line',
+            data: {
+                labels: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                datasets: [{
+                    label: 'Current Week Sales',
+                    data: [@foreach($weekly_sales_datails as $weekly_sales_datails)
+                            {{$weekly_sales_datails->total}},
+                        @endforeach],
+                    pointBackgroundColor: 'blue',
+                    pointBorderColor: 'blue',
+                    borderColor: '#6565f8', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#0B2A97',
+                    pointHoverBorderColor: '#0B2A97',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.1,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#0202ff33',  
+                    }
+                }]
+            },
+        });
+    </script>
+
+    {{-- compare weekly sales report --}}
     <script>
         const compare_weekly_sales_chart = document.getElementById('compare_weekly_sales_chart');
         new Chart(compare_weekly_sales_chart, {
@@ -449,7 +485,7 @@
         });
     </script>
 
-{{-- monthly sales report --}}
+    {{-- monthly sales report --}}
     <script>
         const monthly_sales_chart = document.getElementById('monthly_sales_chart');
         new Chart(monthly_sales_chart, {
@@ -469,7 +505,7 @@
         });
     </script>
 
-{{-- monthly sales on payment method --}}
+    {{-- monthly sales on payment method --}}
     <script>
         const monthly_sales_on_payment_method_pie = document.getElementById('monthly_sales_on_payment_method_pie');
         new Chart(monthly_sales_on_payment_method_pie, {
