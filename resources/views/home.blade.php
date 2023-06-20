@@ -382,7 +382,7 @@
                 datasets: [{
                     label: 'Last 7 Days Sales',
                     data: [@foreach($last_7_days_sales_details as $last_7_days_sales_details)
-                            {{$last_7_days_sales_details->total}},
+                            {{$last_7_days_sales_details->total_sum}},  // here total_sum came from controller
                         @endforeach],
                     pointBackgroundColor: 'blue',
                     pointBorderColor: 'blue',

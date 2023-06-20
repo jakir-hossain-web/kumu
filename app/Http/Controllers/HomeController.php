@@ -37,8 +37,8 @@ class HomeController extends Controller
         $last_7th_date = Carbon::today()->subDays(6);
         $last_7_days_sales_number = Order::where('created_at', '>=', $last_7th_date)->count();
         $last_7_days_sales_amount = Order::where('created_at', '>=', $last_7th_date)->sum('total');
-        $last_7_days_sales_details = Order::where('created_at', '>=', $last_7th_date)->get();
-        // $last_7_days_sales_details = Order::where('created_at', '>=', $last_7th_date)->groupBy('created_at')->selectRaw('sum(total) as sum, product_id')->get();
+        $last_7_days_sales_details = Order::where('created_at', '>=', $last_7th_date)->groupBy('DATE(created_at)')->selectRaw('sum(total) as total_sum, DATE(created_at)')->get();  // here DATE(created_at) is used to get date only from database created_at field
+
 
         // last 30 days order ======== 
         $start_30th_date = Carbon::today()->subDays(29)->format('d/m/Y');  // to show the date on blade
