@@ -95,7 +95,6 @@ class HomeController extends Controller
 
             'last_30_days_sales_number'=>$last_30_days_sales_number,
             'last_30_days_sales_amount'=>$last_30_days_sales_amount,
-            // 'last_30_days_sales_details'=>$last_30_days_sales_details,
 
             'weekly_sales_number'=>$weekly_sales_number,
             'weekly_sales_amount'=>$weekly_sales_amount,
