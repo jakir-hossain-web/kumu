@@ -1,15 +1,5 @@
 @extends('layouts.dashboard')
 
-<style>
-    .chart_heading {
-        position: absolute;
-        top: 10px;
-        right: 38px;
-        font-size: 12px;
-        color: #575353;
-    }
-</style>
-
 @section('content')
 <div class="container">
     <div class="row">
@@ -37,11 +27,11 @@
                             <p class="mb-2" style="font-size: 12px;">({{$current_date}})</p>
                             <div class="order_number" style="font-size: 14px">
                                 <span class="text-grey font-w600">Number of Order: </span>
-                                <span class="text-grey font-w600">{{$daily_sales_number}}</span>
+                                <span class="text-grey font-w600">{{$todays_sales_number}}</span>
                             </div>
                             <div class="order_amount" style="font-size: 14px">
                                 <span class="text-grey font-w600">Order Amount: </span>
-                                <span class="text-grey font-w600">{{number_format($daily_sales_amount)}}</span>
+                                <span class="text-grey font-w600">{{number_format($todays_sales_amount)}}</span>
                             </div>
                         </div>
                     </div>
@@ -79,11 +69,11 @@
                             <p class="mb-2" style="font-size: 12px;">(Saturday-Friday)</p>
                             <div class="order_number" style="font-size: 14px">
                                 <span class="text-grey font-w600">Number of Order: </span>
-                                <span class="text-grey font-w600">{{$weekly_sales_number}}</span>
+                                <span class="text-grey font-w600">{{$current_week_sales_number}}</span>
                             </div>
                             <div class="order_amount" style="font-size: 14px">
                                 <span class="text-grey font-w600">Order Amount: </span>
-                                <span class="text-grey font-w600">{{number_format($weekly_sales_amount)}}</span>
+                                <span class="text-grey font-w600">{{number_format($current_week_sales_amount)}}</span>
                             </div>
                         </div>
                     </div>
@@ -116,14 +106,14 @@
                         </span>
                         <div class="media-body">
                             <p class="fs-14 mb-0">Current Month Order</p>
-                            <p class="mb-2" style="font-size: 12px;">({{$current_month}}-{{$current_year}})</p>
+                            <p class="mb-2" style="font-size: 12px;">({{$current_month}})</p>
                             <div class="order_number" style="font-size: 14px">
                                 <span class="text-grey font-w600">Number of Order: </span>
-                                <span class="text-grey font-w600">{{$monthly_sales_number}}</span>
+                                <span class="text-grey font-w600">{{$current_month_sales_number}}</span>
                             </div>
                             <div class="order_amount" style="font-size: 14px">
                                 <span class="text-grey font-w600">Order Amount: </span>
-                                <span class="text-grey font-w600">{{number_format($monthly_sales_amount)}}</span>
+                                <span class="text-grey font-w600">{{number_format($current_month_sales_amount)}}</span>
                             </div>
                         </div>
                     </div>
@@ -262,7 +252,7 @@
                 <div class="effect bg-danger"></div>
             </div>
         </div>
-        <div class="col-sm-6 m-auto">
+        <div class="col-sm-6">
             <div class="card avtivity-card">
                 <div class="card-body">
                     <div class="media align-items-center">
@@ -291,6 +281,7 @@
                                 <div class="custom_search d-flex justify-content-between mt-2">
                                     <div class="mb-3" style="font-size: 13px">
                                         <label for="" class="form-label">From:</label>
+                                        <input type="hidden" value="1" name="custom_search">
                                         <input type="date" class="form-control" name="search_start_date" style="height: 40px" value="{{$search_start_date}}">
                                     </div>
                                     <div class="mb-3" style="font-size: 13px">
@@ -326,44 +317,76 @@
 
     {{-- chart.js div --}}
     <div class="row">
+        {{--======= custom search order status chart =======--}}
+        <div class="col-lg-6 mt-5">
+            <canvas id="customs_search_order_status" style="color: #0202ff80"></canvas>
+            <p class="text-center mt-2">Chart: Order Status ({{$customs_search_start_date}} to {{$customs_search_end_date}})</p>
+        </div>
+
+        {{--======= custom search payment method chart =======--}}
+        <div class="col-lg-6 mt-5">
+            <canvas id="customs_search_payment_method" style="color: #0202ff80"></canvas>
+            <p class="text-center mt-2">Chart: Payment Method ({{$customs_search_start_date}} to {{$customs_search_end_date}})</p>
+        </div>
+
         {{--======= Last 7 Days Sales =======--}}
         <div class="col-lg-12 mt-5">
-            <h6 class="chart_heading">(Figure in Lac)</h6>
             <canvas id="last_7_days_sales_chart"></canvas>
-            <p class="text-center mt-2">Chart: Last 7 Days Sales</p>
+            <p class="text-center mt-2">Chart: Last 7 Days Sales ({{$start_7th_date}} - Today)</p>
         </div>
 
         {{--======= Current Weekly Sales =======--}}
         <div class="col-lg-12 mt-5">
-            <h6 class="chart_heading">(Figure in Lac)</h6>
             <canvas id="weekly_sales_chart"></canvas>
-            <p class="text-center mt-2">Chart: Current Weekly Sales</p>
+            <p class="text-center mt-2">Chart: Current Weekly Sales (Saturday-Friday)</p>
         </div>
 
-        {{--======= Compare Weekly Sales =======--}}
+        {{--======= Weekly Sales Compare (in amount) =======--}}
         <div class="col-lg-12 mt-5">
-            <h6 class="chart_heading">(Figure in Lac)</h6>
-            <canvas id="compare_weekly_sales_chart"></canvas>
-            <p class="text-center mt-2">Chart: Compare Weekly Sales</p>
+            <canvas id="compare_weekly_sales_amount_chart"></canvas>
+            <p class="text-center mt-2">Chart: Weekly Sales Compare Between Current Week & Previous Week (in amount)</p>
         </div>
 
-        {{--======= Monthly Sales =======--}}
+        {{--======= Weekly Sales Compare (in Quantity) =======--}}
         <div class="col-lg-12 mt-5">
-            <h6 class="chart_heading">(Figure in Lac)</h6>
-            <canvas id="monthly_sales_chart" style="color: #0202ff80"></canvas>
-            <p class="text-center mt-2">Chart: Monthly Sales</p>
+            <canvas id="compare_weekly_sales_number_chart"></canvas>
+            <p class="text-center mt-2">Chart: Weekly Sales Compare Between Current Week & Previous Week (in quantity)</p>
         </div>
 
-        {{--======= Monthly Sales Based on Payment Method using pie chart =======--}}
-        <div class="col-lg-6 mt-5">
-            <canvas id="monthly_sales_on_payment_method_pie" style="color: #0202ff80"></canvas>
-            <p class="text-center mt-2">Chart: Monthly Sales Based on Payment Method</p>
+        {{--======= Last 30 Days Sales =======--}}
+        <div class="col-lg-12 mt-5">
+            <canvas id="last_30_days_sales_chart"></canvas>
+            <p class="text-center mt-2">Chart: Last 30 Days Sales ({{$start_30th_date}} - Today)</p>
         </div>
 
-        {{--======= Monthly Sales Based on Payment Method using doughnut chart =======--}}
-        <div class="col-lg-6 mt-5">
-            <canvas id="monthly_sales_on_payment_method_doughnut" style="color: #0202ff80"></canvas>
-            <p class="text-center mt-2">Chart: Monthly Sales Based on Payment Method</p>
+        {{--======= Current month sales chart =======--}}
+        <div class="col-lg-12 mt-5">
+            <canvas id="current_month_sales_chart"></canvas>
+            <p class="text-center mt-2">Chart: Current Month Sales ({{$current_month}})</p>
+        </div>
+
+        {{--======= Monthly Sales Compare (in amount) =======--}}
+        <div class="col-lg-12 mt-5">
+            <canvas id="compare_monthly_sales_amount_chart"></canvas>
+            <p class="text-center mt-2">Chart: Monthly Sales Compare Between {{$previous_month}} & {{$current_month}} (in amount)</p>
+        </div>
+
+        {{--======= Monthly Sales Compare (in quantity) =======--}}
+        <div class="col-lg-12 mt-5">
+            <canvas id="compare_monthly_sales_number_chart"></canvas>
+            <p class="text-center mt-2">Chart: Monthly Sales Compare Between {{$previous_month}} & {{$current_month}} (in quantity)</p>
+        </div>
+
+        {{--======= Current Year Monthly Sales (in amount) =======--}}
+        <div class="col-lg-12 mt-5">
+            <canvas id="current_year_monthly_sales_amount_chart" style="color: #0202ff80"></canvas>
+            <p class="text-center mt-2">Chart: Current Year Monthly Sales in Amount (Year-{{$current_year}})</p>
+        </div>
+
+        {{--======= Current Year Monthly Sales (in quantity) =======--}}
+        <div class="col-lg-12 mt-5">
+            <canvas id="current_year_monthly_sales_number_chart" style="color: #0202ff80"></canvas>
+            <p class="text-center mt-2">Chart: Current Year Monthly Sales in Quantity (Year-{{$current_year}})</p>
         </div>
     </div>
 
@@ -372,99 +395,56 @@
 
 @section('footer_script')
 
-    {{-- last 7 days sales report --}}
+{{-- =================== monthly sales based on payment method ==================== --}}
+    <script>
+        const customs_search_order_status = document.getElementById('customs_search_order_status');
+        new Chart(customs_search_order_status, {
+            type: 'doughnut',
+            data: {
+                labels: ['Placed', 'Confirmed', 'Processing', 'On Delivery', 'Delivered', 'Cancelled'],
+                datasets: [{
+                    label: 'Order Status',
+                    data: {!! $order_status !!},
+                    borderWidth: 0,
+                    offset: 10, // gap between every part
+                    hoverOffset: 30,  // gap between every part when hover
+                }]
+            },
+        });
+    </script>
+
+
+
+{{-- =================== monthly sales based on payment method ==================== --}}
+    <script>
+        const customs_search_payment_method = document.getElementById('customs_search_payment_method');
+        new Chart(customs_search_payment_method, {
+            type: 'doughnut',
+            data: {
+                labels: ['Cash on Delivery', 'SSL Commerce Payment', 'Stripe Payment'],
+                datasets: [{
+                    label: 'Order Status',
+                    data: {!! $payment_method !!},
+                    borderWidth: 0,
+                    offset: 10, // gap between every part
+                    hoverOffset: 30,  // gap between every part when hover
+                }]
+            },
+        });
+    </script>
+
+
+
+    {{-- ================== last 7 days sales chart ========================= --}}
     <script>
         const last_7_days_sales_chart = document.getElementById('last_7_days_sales_chart');
         new Chart(last_7_days_sales_chart, {
             type: 'line',
             data: {
-                labels: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                labels: {!! $last_7_days_sales_date !!},
                 datasets: [{
-                    label: 'Last 7 Days Sales',
-                    data: [@foreach($last_7_days_sales_details as $last_7_days_sales_details)
-                            {{$last_7_days_sales_details->total_sum}},  // here total_sum came from controller
-                        @endforeach],
-                    pointBackgroundColor: 'blue',
-                    pointBorderColor: 'blue',
-                    borderColor: '#6565f8', // Border color for line
-                    borderWidth: 4,
-                    pointRadius: 4,
-                    pointHoverBackgroundColor: '#0B2A97',
-                    pointHoverBorderColor: '#0B2A97',
-                    pointHoverRadius: 8,
-                    pointHitRadius: '10', // how far mouse cursor detect the point
-                    borderJoinStyle: ['round'],
-                    tension: 0.1,  // curve the line according to pointJoin
-                    fill: {  // fill the target area with color
-                        target: 'origin',
-                        above: '#0202ff33',  
-                    }
-                }]
-            },
-        });
-    </script>
-
-    {{-- weekly sales report --}}
-    <script>
-        const weekly_sales_chart = document.getElementById('weekly_sales_chart');
-        new Chart(weekly_sales_chart, {
-            type: 'line',
-            data: {
-                labels: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-                datasets: [{
-                    label: 'Current Week Sales',
-                    data: [@foreach($weekly_sales_datails as $weekly_sales_datails)
-                            {{$weekly_sales_datails->total}},
-                        @endforeach],
-                    pointBackgroundColor: 'blue',
-                    pointBorderColor: 'blue',
-                    borderColor: '#6565f8', // Border color for line
-                    borderWidth: 4,
-                    pointRadius: 4,
-                    pointHoverBackgroundColor: '#0B2A97',
-                    pointHoverBorderColor: '#0B2A97',
-                    pointHoverRadius: 8,
-                    pointHitRadius: '10', // how far mouse cursor detect the point
-                    borderJoinStyle: ['round'],
-                    tension: 0.1,  // curve the line according to pointJoin
-                    fill: {  // fill the target area with color
-                        target: 'origin',
-                        above: '#0202ff33',  
-                    }
-                }]
-            },
-        });
-    </script>
-
-    {{-- compare weekly sales report --}}
-    <script>
-        const compare_weekly_sales_chart = document.getElementById('compare_weekly_sales_chart');
-        new Chart(compare_weekly_sales_chart, {
-            type: 'line',
-            data: {
-                labels: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-                datasets: [{
-                    label: 'Current Week Sales',
-                    data: [12, 19, 8, 5, 9, 8, 14],
-                    pointBackgroundColor: 'blue',
-                    pointBorderColor: 'blue',
-                    borderColor: '#6565f8', // Border color for line
-                    borderWidth: 4,
-                    pointRadius: 4,
-                    pointHoverBackgroundColor: '#0B2A97',
-                    pointHoverBorderColor: '#0B2A97',
-                    pointHoverRadius: 8,
-                    pointHitRadius: '10', // how far mouse cursor detect the point
-                    borderJoinStyle: ['round'],
-                    tension: 0.2,  // curve the line according to pointJoin
-                    fill: {  // fill the target area with color
-                        target: 'origin',
-                        above: '#0202ff33',  
-                    }
-                }, {
-
-                    label: 'Previous Week Sales',
-                    data: [10, 12, 18, 15, 11, 6, 13],
+                    label: 'Sales in quantity',
+                    data: {!! $last_7_days_daily_sales_number !!},
                     pointBackgroundColor: '#e83e8c',
                     pointBorderColor: '#e83e8c',
                     borderColor: '#e0649e', // Border color for line
@@ -480,21 +460,391 @@
                         target: 'origin',
                         above: '#ee04714d',  
                     }
-                }],
+                },{
+                    label: 'Sales in amount (Tk.)',
+                    data: {!! $last_7_days_daily_sales_amount !!},
+                    pointBackgroundColor: 'blue',
+                    pointBorderColor: 'blue',
+                    borderColor: '#6565f8', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#0B2A97',
+                    pointHoverBorderColor: '#0B2A97',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.1,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#0202ff33',  
+                    }
+                }]
             },
         });
     </script>
 
-    {{-- monthly sales report --}}
+
+
+    {{-- =================== current week sales chart ======================= --}}
     <script>
-        const monthly_sales_chart = document.getElementById('monthly_sales_chart');
-        new Chart(monthly_sales_chart, {
+        const weekly_sales_chart = document.getElementById('weekly_sales_chart');
+        new Chart(weekly_sales_chart, {
+            type: 'line',
+            data: {
+                labels: {!! $current_week_sales_date !!},
+                datasets: [{
+                    label: 'Sales in quantity',
+                    data: {!! $current_week_daily_sales_number !!},
+                    pointBackgroundColor: '#e83e8c',
+                    pointBorderColor: '#e83e8c',
+                    borderColor: '#e0649e', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#ff0077',
+                    pointHoverBorderColor: '#ff0077',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.2,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#ee04714d',  
+                    }
+                },{
+                    label: 'Sales in amount (Tk.)',
+                    data: {!! $current_week_daily_sales_amount !!},
+                    pointBackgroundColor: 'blue',
+                    pointBorderColor: 'blue',
+                    borderColor: '#6565f8', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#0B2A97',
+                    pointHoverBorderColor: '#0B2A97',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.1,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#0202ff33',  
+                    }
+                }]
+            },
+        });
+    </script>
+
+
+
+    {{-- ======================== compare weekly sales chart (in amount) ======================== --}}
+    <script>
+        const compare_weekly_sales_amount_chart = document.getElementById('compare_weekly_sales_amount_chart');
+        new Chart(compare_weekly_sales_amount_chart, {
+            type: 'line',
+            data: {
+                labels: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                datasets: [{
+                    label: 'Previous week sales',
+                    data: {!! $previous_week_daily_sales_amount !!},
+                    pointBackgroundColor: '#e83e8c',
+                    pointBorderColor: '#e83e8c',
+                    borderColor: '#e0649e', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#ff0077',
+                    pointHoverBorderColor: '#ff0077',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.2,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#ee04714d',  
+                    }
+                },{
+                    label: 'Current week sales',
+                    data: {!! $current_week_daily_sales_amount !!},
+                    pointBackgroundColor: 'blue',
+                    pointBorderColor: 'blue',
+                    borderColor: '#6565f8', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#0B2A97',
+                    pointHoverBorderColor: '#0B2A97',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.1,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#0202ff33',  
+                    }
+                }]
+            },
+        });
+    </script>
+
+
+
+    {{-- ======================== compare weekly sales chart (in quantity) ======================== --}}
+    <script>
+        const compare_weekly_sales_number_chart = document.getElementById('compare_weekly_sales_number_chart');
+        new Chart(compare_weekly_sales_number_chart, {
+            type: 'line',
+            data: {
+                labels: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                datasets: [{
+                    label: 'Previous week sales',
+                    data: {!! $previous_week_daily_sales_number !!},
+                    pointBackgroundColor: '#e83e8c',
+                    pointBorderColor: '#e83e8c',
+                    borderColor: '#e0649e', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#ff0077',
+                    pointHoverBorderColor: '#ff0077',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.2,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#ee04714d',  
+                    }
+                },{
+                    label: 'Current week sales',
+                    data: {!! $current_week_daily_sales_number !!},
+                    pointBackgroundColor: 'blue',
+                    pointBorderColor: 'blue',
+                    borderColor: '#6565f8', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#0B2A97',
+                    pointHoverBorderColor: '#0B2A97',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.1,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#0202ff33',  
+                    }
+                }]
+            },
+        });
+    </script>
+
+
+{{-- ================== last 30 days sales chart ========================= --}}
+    <script>
+        const last_30_days_sales_chart = document.getElementById('last_30_days_sales_chart');
+        new Chart(last_30_days_sales_chart, {
+            type: 'line',
+            data: {
+                labels: {!! $last_30_days_sales_date !!},
+                datasets: [{
+                    label: 'Sales in quantity',
+                    data: {!! $last_30_days_daily_sales_number !!},
+                    pointBackgroundColor: '#e83e8c',
+                    pointBorderColor: '#e83e8c',
+                    borderColor: '#e0649e', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#ff0077',
+                    pointHoverBorderColor: '#ff0077',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.2,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#ee04714d',  
+                    }
+                },{
+                    label: 'Sales in amount (Tk.)',
+                    data: {!! $last_30_days_daily_sales_amount !!},
+                    pointBackgroundColor: 'blue',
+                    pointBorderColor: 'blue',
+                    borderColor: '#6565f8', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#0B2A97',
+                    pointHoverBorderColor: '#0B2A97',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.1,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#0202ff33',  
+                    }
+                }]
+            },
+        });
+    </script>
+
+
+
+{{-- ======================== current month sales chart ======================== --}}
+    <script>
+        const current_month_sales_chart = document.getElementById('current_month_sales_chart');
+        new Chart(current_month_sales_chart, {
+            type: 'line',
+            data: {
+                labels: {!! $current_month_sales_date !!},
+                datasets: [{
+                    label: 'Sales in quantity',
+                    data: {!! $current_month_daily_sales_number !!},
+                    pointBackgroundColor: '#e83e8c',
+                    pointBorderColor: '#e83e8c',
+                    borderColor: '#e0649e', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#ff0077',
+                    pointHoverBorderColor: '#ff0077',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.2,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#ee04714d',  
+                    }
+                },{
+                    label: 'Sales in amount (Tk.)',
+                    data: {!! $current_month_daily_sales_amount !!},
+                    pointBackgroundColor: 'blue',
+                    pointBorderColor: 'blue',
+                    borderColor: '#6565f8', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#0B2A97',
+                    pointHoverBorderColor: '#0B2A97',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.1,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#0202ff33',  
+                    }
+                }]
+            },
+        });
+    </script>
+
+
+
+    {{-- ======================== compare monthly sales chart (in amount) ======================== --}}
+    <script>
+        const compare_monthly_sales_amount_chart = document.getElementById('compare_monthly_sales_amount_chart');
+        new Chart(compare_monthly_sales_amount_chart, {
+            type: 'line',
+            data: {
+                labels: {!! $maximum_day_of_a_month !!},
+                datasets: [{
+                    label: 'Previous month sales',
+                    data: {!! $previous_month_daily_sales_amount !!},
+                    pointBackgroundColor: '#e83e8c',
+                    pointBorderColor: '#e83e8c',
+                    borderColor: '#e0649e', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#ff0077',
+                    pointHoverBorderColor: '#ff0077',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.2,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#ee04714d',  
+                    }
+                },{
+                    label: 'Current month sales',
+                    data: {!! $current_month_daily_sales_amount !!},
+                    pointBackgroundColor: 'blue',
+                    pointBorderColor: 'blue',
+                    borderColor: '#6565f8', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#0B2A97',
+                    pointHoverBorderColor: '#0B2A97',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.1,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#0202ff33',  
+                    }
+                }]
+            },
+        });
+    </script>
+
+
+
+{{-- ======================== compare monthly sales chart (in quantity) ======================== --}}
+    <script>
+        const compare_monthly_sales_number_chart = document.getElementById('compare_monthly_sales_number_chart');
+        new Chart(compare_monthly_sales_number_chart, {
+            type: 'line',
+            data: {
+                labels: {!! $maximum_day_of_a_month !!},
+                datasets: [{
+                    label: 'Previous month sales',
+                    data: {!! $previous_month_daily_sales_number !!},
+                    pointBackgroundColor: '#e83e8c',
+                    pointBorderColor: '#e83e8c',
+                    borderColor: '#e0649e', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#ff0077',
+                    pointHoverBorderColor: '#ff0077',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.2,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#ee04714d',  
+                    }
+                },{
+                    label: 'Current month sales',
+                    data: {!! $current_month_daily_sales_number !!},
+                    pointBackgroundColor: 'blue',
+                    pointBorderColor: 'blue',
+                    borderColor: '#6565f8', // Border color for line
+                    borderWidth: 4,
+                    pointRadius: 4,
+                    pointHoverBackgroundColor: '#0B2A97',
+                    pointHoverBorderColor: '#0B2A97',
+                    pointHoverRadius: 8,
+                    pointHitRadius: '10', // how far mouse cursor detect the point
+                    borderJoinStyle: ['round'],
+                    tension: 0.1,  // curve the line according to pointJoin
+                    fill: {  // fill the target area with color
+                        target: 'origin',
+                        above: '#0202ff33',  
+                    }
+                }]
+            },
+        });
+    </script>
+
+
+
+
+    {{-- ==================== current year monthly sales chart (in amount) ========================= --}}
+    <script>
+        const current_year_monthly_sales_amount_chart = document.getElementById('current_year_monthly_sales_amount_chart');
+        new Chart(current_year_monthly_sales_amount_chart, {
             type: 'bar',
             data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                labels: {!! $current_year_sales_month !!},
                 datasets: [{
-                    label: 'Monthly Sales',
-                    data: [215000, 185049, 150585, 256650, 225566, 305620, 139955, 298525, 330055, 258865, 289950, 228850],
+                    label: 'Sales in amount (Tk.)',
+                    data: {!! $current_year_monthly_sales_amount !!},
                     maxBarThickness: 50,
                     backgroundColor: '#0202ff40',
                     borderColor: 'blue',
@@ -505,39 +855,28 @@
         });
     </script>
 
-    {{-- monthly sales on payment method --}}
+
+
+
+    {{-- ==================== current year monthly sales chart (in quantity) ========================= --}}
     <script>
-        const monthly_sales_on_payment_method_pie = document.getElementById('monthly_sales_on_payment_method_pie');
-        new Chart(monthly_sales_on_payment_method_pie, {
-            type: 'pie',
+        const current_year_monthly_sales_number_chart = document.getElementById('current_year_monthly_sales_number_chart');
+        new Chart(current_year_monthly_sales_number_chart, {
+            type: 'bar',
             data: {
-                labels: ['Cash on Delivery', 'SSL Commerse', 'Stripe'],
+                labels: {!! $current_year_sales_month !!},
                 datasets: [{
-                    label: 'Monthly Sales Based on Payment Method',
-                    data: [15, 12, 9],
-                    borderWidth: 0,
-                    offset: 10, // gap between every part
-                    hoverOffset: 30,  // gap between every part when hover
+                    label: 'Sales in quantity',
+                    data: {!! $current_year_monthly_sales_number !!},
+                    maxBarThickness: 50,
+                    backgroundColor: '#ee04714d',
+                    borderColor: '#ff0479',
+                    borderWidth: 2,
+                    hoverBackgroundColor: '#ff047999',
                 }]
             },
         });
     </script>
 
-    <script>
-        const monthly_sales_on_payment_method_doughnut = document.getElementById('monthly_sales_on_payment_method_doughnut');
-        new Chart(monthly_sales_on_payment_method_doughnut, {
-            type: 'doughnut',
-            data: {
-                labels: ['Cash on Delivery', 'SSL Commerse', 'Stripe'],
-                datasets: [{
-                    label: 'Monthly Sales Based on Payment Method',
-                    data: [25, 12, 5],
-                    borderWidth: 0,
-                    offset: 10, // gap between every part
-                    hoverOffset: 30,  // gap between every part when hover
-                }]
-            },
-        });
-    </script>
     
 @endsection
