@@ -320,13 +320,21 @@
         {{--======= custom search order status chart =======--}}
         <div class="col-lg-6 mt-5">
             <canvas id="customs_search_order_status" style="color: #0202ff80"></canvas>
-            <p class="text-center mt-2">Chart: Order Status ({{$customs_search_start_date}} to {{$customs_search_end_date}})</p>
+            @if ($search_start_date == null)
+                <p class="text-center mt-2">Chart: Order Status ({{'All Sales Data'}})</p>
+                @else
+                <p class="text-center mt-2">Chart: Order Status ({{$search_start_date}} to {{$search_end_date}})</p>               
+            @endif
         </div>
 
         {{--======= custom search payment method chart =======--}}
         <div class="col-lg-6 mt-5">
             <canvas id="customs_search_payment_method" style="color: #0202ff80"></canvas>
-            <p class="text-center mt-2">Chart: Payment Method ({{$customs_search_start_date}} to {{$customs_search_end_date}})</p>
+            @if ($search_start_date == null)
+                <p class="text-center mt-2">Chart: Order Status ({{'All Sales Data'}})</p>
+                @else
+                <p class="text-center mt-2">Chart: Order Status ({{$search_start_date}} to {{$search_end_date}})</p>               
+            @endif
         </div>
 
         {{--======= Last 7 Days Sales =======--}}

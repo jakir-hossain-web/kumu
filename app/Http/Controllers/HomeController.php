@@ -262,8 +262,7 @@ class HomeController extends Controller
                 $search_payment_method = Order::whereBetween('created_at', [$search_start_date_with_time, $search_end_date_with_time])->where('payment_method', $i)->count();
                 array_push($payment_method, $search_payment_method);
             }
-            $customs_search_start_date = $search_start_date;
-            $customs_search_end_date = $search_end_date;
+
         }
         else{
             for($i = 1; $i <= 6; $i++){
@@ -289,9 +288,6 @@ class HomeController extends Controller
             'current_month'=>$current_month,
             'previous_month'=>$previous_month,
             'current_year'=>$current_year,
-            
-            'customs_search_start_date'=>$customs_search_start_date,
-            'customs_search_end_date'=>$customs_search_end_date,
 
             'start_7th_date'=>$start_7th_date,
             'start_30th_date'=>$start_30th_date,
