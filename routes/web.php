@@ -37,6 +37,7 @@ use App\Http\Controllers\ReportController;
 
 Route::get('/', [Frontendcontroller::class, 'home'])->name('front.home');
 Route::get('/shop', [Frontendcontroller::class, 'shop'])->name('shop');
+Route::get('/about_us', [Frontendcontroller::class, 'about_us'])->name('about_us');
 Route::get('/contact', [Frontendcontroller::class, 'contact'])->name('contact');
 Route::get('/catagory_product/{catagory_id}', [Frontendcontroller::class, 'catagory_product'])->name('catagory_product');
 Route::get('/product/details/{slug}', [Frontendcontroller::class, 'product_details'])->name('product.details');

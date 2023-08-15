@@ -139,6 +139,10 @@ class Frontendcontroller extends Controller
         ]);
     }
 
+    function about_us(){
+        return view('frontend.about_us');
+    }
+
     function contact(){
         return view('frontend.contact');
     }

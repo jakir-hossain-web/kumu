@@ -309,7 +309,7 @@
 								<ul class="nav-menu">
 									<li><a href="{{route('front.home')}}" class="pl-0">Home</a></li>
 									<li><a href="{{route('shop')}}">Shop</a></li>
-									<li><a href="#">About Us</a></li>
+									<li><a href="{{route('about_us')}}">About Us</a></li>
 									<li><a href="{{route('contact')}}">Contact</a></li>
 								</ul>
 							</div>
