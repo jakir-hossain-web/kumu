@@ -139,6 +139,10 @@ class Frontendcontroller extends Controller
         ]);
     }
 
+    function contact(){
+        return view('frontend.contact');
+    }
+
     function product_details($slug){
 
         if (Product::where('slug', $slug)->exists()) {
