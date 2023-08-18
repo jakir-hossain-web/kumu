@@ -8,6 +8,7 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomerLoginController;
 use App\Http\Controllers\CustomerRegisterController;
 use App\Http\Controllers\CustomerProfileController;
+use App\Http\Controllers\CustomerMessageController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Frontendcontroller;
@@ -121,6 +122,9 @@ Route::get('/customer/email_verify/{token}', [CustomerRegisterController::class,
 
 // 404 page ====================
 Route::get('/404', [Frontendcontroller::class, 'error_404'])->name('404');
+
+// contact page ================
+Route::post('/contact/message', [Frontendcontroller::class, 'contact_message'])->name('contact_message');
 
 
 
@@ -239,6 +243,11 @@ Route::post('/user/role/change', [RoleManagerController::class, 'user_role_chang
 Route::get('/user/role/delete/{role_id}', [RoleManagerController::class, 'user_role_delete'])->name('user_role_delete');
 Route::post('/user/role/permission_remove', [RoleManagerController::class, 'role_user_permission_remove'])->name('role.user_permission_remove');
 Route::post('/getPermission', [RoleManagerController::class, 'getPermission']);
+
+
+// customer message =================
+Route::get('/customer/message', [CustomerMessageController::class, 'customer_message'])->name('customer_message');
+Route::post('/customer/message/reply', [CustomerMessageController::class, 'reply_customer_message'])->name('reply_customer_message');
 
 
 // report =================

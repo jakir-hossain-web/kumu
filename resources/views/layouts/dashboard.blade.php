@@ -96,11 +96,49 @@
 									<input type="text" class="form-control" placeholder="Search here...">
 								</div>
 							</li>
+
+							{{-- ========== Customer message notification =========== --}}
+							<li class="nav-item dropdown notification_dropdown">
+                                <a class="nav-link  ai-icon" href="javascript:void(0)" role="button" data-toggle="dropdown">
+                                    <i class="fa fa-envelope"></i>
+									<div class="pulse-css text-primary text-center">{{App\Models\CustomerMessage::where('notification_status', 0)->count()}}</div>
+                                </a>
+
+                                <div class="dropdown-menu rounded dropdown-menu-right">
+                                    <div id="DZ_W_Notification1" class="widget-media dz-scroll p-3 height380">
+										<ul class="timeline">
+											@foreach (App\Models\CustomerMessage::where('notification_status', 0)->orderBy('created_at','desc')->get() as $notification_status)
+												<li>
+													{{-- <a href="{{route('order.details', $notification_status->id)}}">
+														<div class="timeline-panel">
+															<div class="media mr-2">
+																@if ($notification_status->rel_to_customer->profile_image == null)
+																	<img alt="image" width="50" src="{{ Avatar::create($notification_status->rel_to_customer->name)->toBase64() }}" />
+																	@else
+																	<img alt="image" width="50" src="{{asset('uploads/customer')}}/{{$notification_status->rel_to_customer->profile_image}}">
+																@endif
+															</div>
+															<div class="media-body">
+																<h6 class="mb-1">{{$notification_status->rel_to_customer->name}}</h6>
+																<small class="d-block">{{$notification_status->created_at->format('d M, Y')}}</small>
+															</div>
+														</div>
+													</a> --}}
+												</li>
+											@endforeach
+										</ul>
+									</div>
+                                    <a class="all-notification" href="javascript:void(0)">See all messages <i class="ti-arrow-right"></i></a>
+                                </div>
+                            </li>
+
+							{{-- ============= Order placed notification ============= --}}
 							<li class="nav-item dropdown notification_dropdown">
                                 <a class="nav-link  ai-icon" href="javascript:void(0)" role="button" data-toggle="dropdown">
                                     <i class="fa fa-shopping-bag"></i>
 									<div class="pulse-css text-primary text-center">{{App\Models\Order::where('notification_status', 0)->count()}}</div>
                                 </a>
+
                                 <div class="dropdown-menu rounded dropdown-menu-right">
                                     <div id="DZ_W_Notification1" class="widget-media dz-scroll p-3 height380">
 										<ul class="timeline">
@@ -247,6 +285,11 @@
 					<li><a class="ai-icon" href="{{route('order_list')}}" aria-expanded="false">
 							<i class="fa fa-paper-plane"></i>
 							<span class="nav-text">Order List</span>
+						</a>
+					</li>   
+					<li><a class="ai-icon" href="{{route('customer_message')}}" aria-expanded="false">
+							<i class="fa fa-envelope"></i>
+							<span class="nav-text">Customer Message</span>
 						</a>
 					</li>   
 					<li><a class="ai-icon" href="{{route('report')}}" aria-expanded="false">

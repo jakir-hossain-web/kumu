@@ -25,7 +25,7 @@ class CustomerRegisterController extends Controller
             'password_confirmation'=>'required',
         ],[
             'name.required'=>'Name Field is Empty!',
-            'name.min'=>'Minimum 3 Character!',
+            'name.min'=>'Minimum 3 Character Required!',
             'name.regex'=>'Alphabetic  Character Only!',
             'email.required'=>'Email Field is Empty!',
             'password.required'=>'Password Field is Empty!',
