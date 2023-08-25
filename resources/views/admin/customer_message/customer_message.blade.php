@@ -36,8 +36,9 @@
                                 <td style="width: 25%">{{$message->message}}</td>
                                 <td style="width: 25%">
                                     <input type="hidden" name="message_id" value="{{$message->id}}">
-                                    <input type="hidden" name="message_sender_email" value="{{$message->email}}">
-                                    <textarea style="border: 2px solid rgb(126, 126, 126)" class="form-control" name="reply_message"></textarea>
+                                    <input type="hidden" name="customer_email_address" value="{{$message->email}}">
+                                    <input type="hidden" name="customer_message" value="{{$message->message}}">
+                                    <textarea style="color:#646464; border: 2px solid #8d8d8d" class="form-control" name="reply_message"></textarea>
                                 </td>
                                 <td class="text-center">
                                     <button type="submit" class="btn btn-primary">Replay</button>
@@ -53,6 +54,16 @@
 @endsection
 
 @section('footer_script')
-
+    @if (session('customer_message_reply_success'))
+        <script>
+            Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: "{{session('customer_message_reply_success')}}",
+            showConfirmButton: false,
+            timer: 2000
+            })
+        </script>
+    @endif
 
 @endsection

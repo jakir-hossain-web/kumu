@@ -1,0 +1,2 @@
+<h1>{{$message_id}}</h1>
+<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Provident vitae nemo eos, pariatur sunt tenetur obcaecati eveniet minima architecto eaque. Quidem, labore excepturi? Vero, incidunt!</p>
