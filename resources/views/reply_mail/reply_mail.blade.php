@@ -11,4 +11,8 @@
 <p style="padding: 10px 30px">"{{$customer_message}}"</p>
 <p>Now we are going to say you that, <span>"{{$reply_message}}"</span></p>
 
-<h3>Thank you.</h3>
+<h4 style="padding-bottom: 10px">Thank you.</h4>
+<h4>Pikter IT</h4>
+<p>Shop No-309, Level-3</p>
+<p>Multiplan Center</p>
+<p>Elephent Road, Dhaka.</p>
