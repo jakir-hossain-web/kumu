@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('email');
             $table->integer('mobile')->nullable();
             $table->longText('message');
+            $table->longText('your_reply')->nullable();
             $table->integer('notification_status')->default(0);
             $table->timestamps();
         });

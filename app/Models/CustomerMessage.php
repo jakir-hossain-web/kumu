@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class CustomerMessage extends Model
 {
     use HasFactory;
+    protected $guarded = ['id'];
 }

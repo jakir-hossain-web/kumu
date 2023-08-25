@@ -1,4 +1,12 @@
 @extends('frontend.master')
+<style>
+    .location_map{
+        transition: .3s;
+    }
+    .location_map:hover{
+        box-shadow: 0 0 7px 1px #000;
+    }
+</style>
 
 @section('content')
     <!-- ======================= Top Breadcrubms ======================== -->
@@ -42,7 +50,7 @@
                         <p class="lh-1"><span class="text-dark ft-medium">Email:</span> pikterit@gmail.com</p>
                         <p class="lh-1"><span class="text-dark ft-medium">Contact no:</span> +8801623486100 & +8801623486101</p>
                     </div>
-                    <iframe width="100%" height="385px" frameborder="0" style="border: 1px solid #e5e5e5; padding: 5px"
+                    <iframe class="location_map" width="100%" height="385px" frameborder="0" style="border: 1px solid #e5e5e5; padding: 5px"
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4343.276665358637!2d90.3874313555202!3d23.73861340351239!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8c78bd8bf49%3A0xc61f0775eabd493d!2sPikter%20IT!5e0!3m2!1sen!2sbd!4v1692106877334!5m2!1sen!2sbd">
                     </iframe>
                 </div>
