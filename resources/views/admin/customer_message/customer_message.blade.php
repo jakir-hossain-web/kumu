@@ -49,7 +49,7 @@
                     @foreach ($messages as $key=>$message) 
                         @if ($message->your_reply == null)
                             <tr style="color: red">
-                                <form action="{{route('reply_customer_message')}}" method="POST">
+                                <form action="{{route('reply_customer_message')}}" method="POST" class="reply_message_form">
                                     @csrf
                                     <td>{{$key+1}}</td>
                                     <td>{{$message->name}}</td>
@@ -75,7 +75,7 @@
 
                             @else
                             <tr>
-                                <form action="{{route('reply_customer_message')}}" method="POST">
+                                <form action="" method="POST">
                                     @csrf
                                     <td>{{$key+1}}</td>
                                     <td>{{$message->name}}</td>
@@ -113,7 +113,6 @@
             $(this).closest('tr').find('textarea').css('cursor', 'text');
         });
     </script>
-
 
     @if (session('customer_message_reply_success'))
         <script>
