@@ -19,12 +19,6 @@ class CustomerMessageController extends Controller
 
     function reply_customer_message(Request $request){
 
-        $request->validate([
-            'reply_message' => 'required',
-        ],[
-            'reply_message.required'=>'Reply Message Field is Empty!',
-        ]);
-
         $message_id =  $request->message_id;
         $customer_email_address =  $request->customer_email_address;
         $customer_message =  $request->customer_message;

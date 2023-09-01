@@ -9,10 +9,10 @@
 <p>We received one message/query/idea/complain from you <span>{{$customer_email}}</span> as on <span>{{$message_date->format('d M,Y')}}</span>.</p>
 <p>Your message was-</p>
 <p style="padding: 10px 30px">"{{$customer_message}}"</p>
-<p>Now we are going to say you that, <span>"{{$reply_message}}"</span></p>
+<p>{{$reply_message}}</p>
 
-<h4 style="padding-bottom: 10px">Thank you.</h4>
-<h4>Pikter IT</h4>
+<h4 style="padding-bottom: 15px">Thank you.</h4>
+<h2>Pikter IT</h2>
 <p>Shop No-309, Level-3</p>
 <p>Multiplan Center</p>
 <p>Elephent Road, Dhaka.</p>
