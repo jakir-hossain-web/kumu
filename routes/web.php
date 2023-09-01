@@ -253,3 +253,4 @@ Route::post('/customer/message/reply', [CustomerMessageController::class, 'reply
 // report =================
 Route::get('/report', [ReportController::class, 'report'])->name('report');
 Route::post('/report/download', [ReportController::class, 'report_download'])->name('report.download');
+

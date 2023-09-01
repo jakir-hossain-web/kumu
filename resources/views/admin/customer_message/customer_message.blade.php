@@ -6,24 +6,12 @@
         border-radius: 10px;
         border: none;
     }
-
     .error_message{
         font-size: 35px;
         text-align: center;
         padding: 10px 0;
     }
-
-    .processing{
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        width: 100vw;
-        background: rgba(0, 0, 0, 0.452);
-        z-index: 999;
-        color: #ffe600;
-    }
-    .sending_message_gif{
+    .sending_message_preloader{
         position: fixed;
         top: 0;
         left: 0;
@@ -32,12 +20,20 @@
         background: rgba(0, 0, 0, 0.85);
         z-index: 999;
     }
-    .sending_message_gif h1{
+    .sending_message_preloader .sending_message_preloader_item{
+        text-align: center;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        color: #fff;
+    }
+    .sending_message_preloader_item h1{
+        color: #ffe600da;
+        font-size: 35px;
+    }
+    .sending_message_preloader_item i{
+        color: #ffe600;
+        font-size: 65px;
     }
 </style>
 
@@ -50,8 +46,11 @@
 </div>
 
 <div class="row">
-    <div class="sending_message_gif d-none">
-        <h1><span></span> Message is sending...</h1>
+    <div class="sending_message_preloader d-none">
+        <div class="sending_message_preloader_item">
+            <h1><i class="fa fa-envelope"></i></h1>
+            <h1>Message is sending...</h1>
+        </div>
     </div>
     <div class="col-lg-12">
         <div class="card">
@@ -59,67 +58,69 @@
                 <h4 style="color: #fff">Customer Message</h4>
             </div>
             <div class="card-body">
-                <table class="table table-striped">
-                    <tr>
-                        <th>SL</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Mobile</th>
-                        <th style="width: 25%">Message</th>
-                        <th class="text-center" style="width: 25%">Our Reply</th>
-                        <th class="text-center">Reply</th>
-                    </tr>
+                <table class="table table-striped" id="messageTable">
+                    <thead>
+                        <tr>
+                            <th>SL</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th style="width: 25%">Message</th>
+                            <th class="text-center" style="width: 25%">Our Reply</th>
+                            <th class="text-center">Reply</th>
+                        </tr>
+                    </thead>
 
-                    @foreach ($messages as $key=>$message) 
-                        @if ($message->your_reply == null)
-                            <tr style="color: #000">
-                                <form action="{{route('reply_customer_message')}}" method="POST">
-                                    @csrf
-                                    <td>{{$key+1}}</td>
-                                    <td>{{$message->name}}</td>
-                                    <td>{{$message->email}}</td>
-                                    <td>{{$message->mobile}}</td>
-                                    <td style="width: 25%">{{$message->message}}</td>
-                                    <td style="width: 25%; padding: 12px 0">
-                                        <div>
-                                            <input type="hidden" name="message_id" value="{{$message->id}}">
-                                            <input type="hidden" name="customer_email_address" value="{{$message->email}}">
-                                            <input type="hidden" name="customer_message" value="{{$message->message}}">
-                                            {{-- <textarea style="color:#646464; border: 1px solid #000;" class="form-control" name="reply_message"></textarea> --}}
-                                            <textarea readonly style="color:#646464; border: 1px solid #c1c1c1; cursor: not-allowed;" class="form-control" name="reply_message" title="Click The Reply Button First" placeholder="Click The Reply Button First"></textarea>
-                                            {{-- error message --}}
-                                            <div class="text-center reply_message_err"></div>
-                                        </div>                                      
-                                    </td>
-                                    <td>
-                                        <div>
-                                            {{-- <button type="submit" class="btn_design btn-primary reply_message_send_btn">Reply</button> --}}
-                                            <button type="button" class="btn_design btn-primary reply_message_btn">Reply</button>
-                                            <button type="submit" class="btn_design btn-success d-none reply_message_send_btn">Send</button>                                    
-                                        </div>
-                                    </td>
-                                </form>
-                            </tr> 
+                    <tbody>
+                        @foreach ($messages as $key=>$message) 
+                            @if ($message->your_reply == null)
+                                <tr style="color: #000">
+                                    <form action="{{route('reply_customer_message')}}" method="POST">
+                                        @csrf
+                                        <td>{{$key+1}}</td>
+                                        <td>{{$message->name}}</td>
+                                        <td>{{$message->email}}</td>
+                                        <td>{{$message->mobile}}</td>
+                                        <td style="width: 25%">{{$message->message}}</td>
+                                        <td style="width: 25%; padding: 12px 0">
+                                            <div>
+                                                <input type="hidden" name="message_id" value="{{$message->id}}">
+                                                <input type="hidden" name="customer_email_address" value="{{$message->email}}">
+                                                <input type="hidden" name="customer_message" value="{{$message->message}}">
+                                                <textarea readonly style="color:#646464; border: 1px solid #c1c1c1; cursor: not-allowed;" class="form-control" name="reply_message" title="Click The Reply Button First" placeholder="Click The Reply Button First"></textarea>
+                                                {{-- error message --}}
+                                                <div class="text-center reply_message_err"></div>
+                                            </div>                                      
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn_design btn-primary reply_message_btn">Reply</button>
+                                                <button type="submit" class="btn_design btn-success d-none reply_message_send_btn">Send</button>                                    
+                                            </div>
+                                        </td>
+                                    </form>
+                                </tr> 
 
-                            @else
-                            <tr>
-                                <form action="" method="POST">
-                                    @csrf
-                                    <td>{{$key+1}}</td>
-                                    <td>{{$message->name}}</td>
-                                    <td>{{$message->email}}</td>
-                                    <td>{{$message->mobile}}</td>
-                                    <td style="width: 25%">{{$message->message}}</td>
-                                    <td style="width: 25%; padding: 12px 0">
-                                        {{$message->your_reply}}
-                                    </td>
-                                    <td>
-                                        <button style="cursor: default" type="button" class="btn_design btn-danger">Sended</button>
-                                    </td>
-                                </form>
-                            </tr> 
-                        @endif
-                    @endforeach
+                                @else
+                                <tr style="color: #6e6e6e">
+                                    <form action="" method="POST">
+                                        @csrf
+                                        <td>{{$key+1}}</td>
+                                        <td>{{$message->name}}</td>
+                                        <td>{{$message->email}}</td>
+                                        <td>{{$message->mobile}}</td>
+                                        <td style="width: 25%">{{$message->message}}</td>
+                                        <td style="width: 25%; padding: 12px 0">
+                                            {{$message->your_reply}}
+                                        </td>
+                                        <td>
+                                            <button style="cursor: default" type="button" class="btn_design btn-danger message_sended_btn">Sended</button>
+                                        </td>
+                                    </form>
+                                </tr> 
+                            @endif
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -128,6 +129,12 @@
 @endsection
 
 @section('footer_script')
+
+    <script>
+        $(document).ready( function () {
+            $('#messageTable').DataTable();
+        } );
+    </script>
 
     <script>
         $(document).ready(function() {
@@ -154,7 +161,7 @@
                     $(this).closest('tr').find('textarea').css('border', '3px solid green');
                     $(this).closest('tr').find('.reply_message_err').html('Sending The Message.....');
                     $(this).closest('tr').find('.reply_message_err').css('color', 'green');
-                    $('.sending_message_gif').removeClass('d-none');
+                    $('.sending_message_preloader').removeClass('d-none');
                     $(this).closest('form').submit();
                 }
             });
@@ -172,6 +179,12 @@
             $(this).closest('tr').find('textarea').css('border', '3px solid #7a7a7a');
             $(this).closest('tr').find('textarea').css('background', '#f2f2f2');
             $(this).closest('tr').find('textarea').css('cursor', 'text');
+        });
+    </script>
+
+    <script>
+        $('.message_sended_btn').click(function(){
+            alert('Reply Message Already Sended!')
         });
     </script>
 

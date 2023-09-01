@@ -222,7 +222,7 @@
 								<span class="nav-text">Users</span>
 							</a>
 						</li> 
-					@endcan  
+					@endcan   
 					
 					@can('role_management')
 						<li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
