@@ -247,6 +247,7 @@ Route::post('/getPermission', [RoleManagerController::class, 'getPermission']);
 
 // customer message =================
 Route::get('/customer/message', [CustomerMessageController::class, 'customer_message'])->name('customer_message');
+Route::get('/customer/message/details/{message_id}', [CustomerMessageController::class, 'customer_message_details'])->name('customer_message_details');
 Route::post('/customer/message/reply', [CustomerMessageController::class, 'reply_customer_message'])->name('reply_customer_message');
 
 

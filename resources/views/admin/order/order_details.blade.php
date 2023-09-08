@@ -135,9 +135,9 @@
                         <th>Color</th>
                         <th>Size</th>
                         <th>Quantity</th>
-                        <th>Price Per Procuct</th>
-                        <th>Sales Discount Per Procuct</th>
-                        <th>After Discount</th>
+                        <th>Unit Price</th>
+                        <th>Unit Discount</th>
+                        <th>Total</th>
                     </tr>
 
                     @foreach (App\Models\OrderProduct::where('order_id', $view_order_id)->get() as $sl=>$order)
@@ -159,10 +159,10 @@
                 <div class="main d-flex justify-content-end">
                     <div class="col-lg-4 order_details_bottom d-flex justify-content-between">
                         <div class="order_details_bottom_text text-right">
-                            <h6 style="color: #7e7e7e">After Discount =</h6>
+                            <h6 style="color: #7e7e7e">Total Price =</h6>
                             <h6 style="color: #7e7e7e">(-)Coupon Discount =</h6>
                             <h6 style="border-bottom: 1px solid #b1aeae; color: #7e7e7e" class="pb-1">(+)Delivery Charge =</h6>
-                            <h4 style="color: #7e7e7e">Total =</h4>
+                            <h4 style="color: #7e7e7e">Grand Total =</h4>
                         </div>
                         <div class="order_details_bottom_amount text-right">
                             <h6 style="color: #7e7e7e">{{number_format(round($view_sub_total-$view_sales_discount))}}/-</h6>

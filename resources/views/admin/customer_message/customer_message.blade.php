@@ -6,11 +6,6 @@
         border-radius: 10px;
         border: none;
     }
-    .error_message{
-        font-size: 35px;
-        text-align: center;
-        padding: 10px 0;
-    }
     .sending_message_preloader{
         position: fixed;
         top: 0;
@@ -64,10 +59,10 @@
                             <th>SL</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Mobile</th>
                             <th style="width: 25%">Message</th>
                             <th class="text-center" style="width: 25%">Our Reply</th>
                             <th class="text-center">Reply</th>
+                            <th>View</th>
                         </tr>
                     </thead>
 
@@ -79,25 +74,25 @@
                                         @csrf
                                         <td>{{$key+1}}</td>
                                         <td>{{$message->name}}</td>
-                                        <td>{{$message->email}}</td>
-                                        <td>{{$message->mobile}}</td>
+                                        <td>{{$message->email}}</td>                                      
                                         <td style="width: 25%">{{$message->message}}</td>
                                         <td style="width: 25%; padding: 12px 0">
                                             <div>
                                                 <input type="hidden" name="message_id" value="{{$message->id}}">
                                                 <input type="hidden" name="customer_email_address" value="{{$message->email}}">
                                                 <input type="hidden" name="customer_message" value="{{$message->message}}">
-                                                <textarea readonly style="color:#646464; border: 1px solid #c1c1c1; cursor: not-allowed;" class="form-control" name="reply_message" title="Click The Reply Button First" placeholder="Click The Reply Button First"></textarea>
+                                                <textarea readonly style="color:#646464; border: 1px solid #c1c1c1; cursor: not-allowed;" class="form-control reply_textarea" name="reply_message" title="Click The Reply Button First" placeholder="Click The Reply Button First"></textarea>
                                                 {{-- error message --}}
                                                 <div class="text-center reply_message_err"></div>
                                             </div>                                      
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn_design btn-primary reply_message_btn">Reply</button>
+                                                <button type="button" class="btn_design btn-primary reply_message_btn" data-custom-value="0">Reply</button>
                                                 <button type="submit" class="btn_design btn-success d-none reply_message_send_btn">Send</button>                                    
                                             </div>
                                         </td>
+                                        <td><button type="button" class="btn_design btn-secondary"><a href="{{route('customer_message_details', $message->id)}}" class="text-white">View</a></button></td>
                                     </form>
                                 </tr> 
 
@@ -108,7 +103,6 @@
                                         <td>{{$key+1}}</td>
                                         <td>{{$message->name}}</td>
                                         <td>{{$message->email}}</td>
-                                        <td>{{$message->mobile}}</td>
                                         <td style="width: 25%">{{$message->message}}</td>
                                         <td style="width: 25%; padding: 12px 0">
                                             {{$message->your_reply}}
@@ -116,6 +110,7 @@
                                         <td>
                                             <button style="cursor: default" type="button" class="btn_design btn-danger message_sended_btn">Replied</button>
                                         </td>
+                                        <td><button type="button" class="btn_design btn-secondary"><a href="{{route('customer_message_details', $message->id)}}" class="text-white">View</a></button></td>
                                     </form>
                                 </tr> 
                             @endif
@@ -144,14 +139,14 @@
                 var length = value.length; 
 
                 if(length == ''){
-                    $(this).closest('tr').find('textarea').css('border', '3px solid red');
+                    $(this).closest('tr').find('textarea').css('border', '2px solid red');
                     $(this).closest('tr').find('textarea').focus();
                     $(this).closest('tr').find('.reply_message_err').html('Type Your Message First!');
                     $(this).closest('tr').find('.reply_message_err').css('color', 'red');
                     event.preventDefault(); // Prevent the default form submission
                 }
                 else if(length <20){
-                    $(this).closest('tr').find('textarea').css('border', '3px solid red');
+                    $(this).closest('tr').find('textarea').css('border', '2px solid red');
                     $(this).closest('tr').find('textarea').focus();
                     $(this).closest('tr').find('.reply_message_err').html('Minimum 20 character Required!');
                     $(this).closest('tr').find('.reply_message_err').css('color', 'red');
@@ -179,12 +174,37 @@
             $(this).closest('tr').find('textarea').css('border', '3px solid #7a7a7a');
             $(this).closest('tr').find('textarea').css('background', '#f2f2f2');
             $(this).closest('tr').find('textarea').css('cursor', 'text');
+            $(this).data('custom-value', '1');
+        });
+    </script>
+
+    <script>
+        $('.reply_textarea').click(function(){
+            if($(this).closest('tr').find('.reply_message_btn').data('custom-value') == 0){
+                Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                text: "Click The Reply Button First!",
+                showConfirmButton: false,
+                background: '#01186d',
+                color: '#d1d1d1',
+                iconColor: '#d1d1d1'
+                })
+            }
         });
     </script>
 
     <script>
         $('.message_sended_btn').click(function(){
-            alert('Reply Message Already Sended!')
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                text: "Reply Message Already Sended!",
+                showConfirmButton: false,
+                background: '#01186d',
+                color: '#d1d1d1',
+                iconColor: '#d1d1d1'
+                })
         });
     </script>
 

@@ -17,6 +17,13 @@ class CustomerMessageController extends Controller
         ]);
     }
 
+    function customer_message_details($message_id){
+        $message_info = CustomerMessage::find($message_id);
+        return view('admin.customer_message.customer_message_details',[
+            'message_info'=>$message_info,
+        ]);
+    }
+
     function reply_customer_message(Request $request){
 
         $message_id =  $request->message_id;

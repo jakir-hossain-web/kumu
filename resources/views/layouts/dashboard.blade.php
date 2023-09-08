@@ -30,6 +30,20 @@
 		input[type=number] {
 		-moz-appearance: textfield;
 		}
+		.message_notification{
+			position: absolute;
+			bottom: 0px;
+			left: 0;
+			padding: 15px 75px 15px 75px;
+			background: #fff;
+		}
+		.order_notification{
+			position: absolute;
+			bottom: 0px;
+			left: 0;
+			padding: 15px 91px 15px 91px;
+			background: #fff;
+		}
 	</style>
 
 </head>
@@ -106,29 +120,25 @@
 
                                 <div class="dropdown-menu rounded dropdown-menu-right">
                                     <div id="DZ_W_Notification1" class="widget-media dz-scroll p-3 height380">
+										<p style="border-bottom: 1px solid #c1c1c1" class="text-center">New Message Notifications</p>
 										<ul class="timeline">
 											@foreach (App\Models\CustomerMessage::where('notification_status', 0)->orderBy('created_at','desc')->get() as $notification_status)
 												<li>
-													{{-- <a href="{{route('order.details', $notification_status->id)}}">
+													<a href="{{route('customer_message_details', $notification_status->id)}}">
 														<div class="timeline-panel">
-															<div class="media mr-2">
-																@if ($notification_status->rel_to_customer->profile_image == null)
-																	<img alt="image" width="50" src="{{ Avatar::create($notification_status->rel_to_customer->name)->toBase64() }}" />
-																	@else
-																	<img alt="image" width="50" src="{{asset('uploads/customer')}}/{{$notification_status->rel_to_customer->profile_image}}">
-																@endif
-															</div>
-															<div class="media-body">
-																<h6 class="mb-1">{{$notification_status->rel_to_customer->name}}</h6>
+															<div class="media-body text-center">
+																<h6 class="mb-1">{{$notification_status->name}}</h6>
 																<small class="d-block">{{$notification_status->created_at->format('d M, Y')}}</small>
 															</div>
 														</div>
-													</a> --}}
+													</a>
 												</li>
 											@endforeach
 										</ul>
 									</div>
-                                    <a class="all-notification" href="javascript:void(0)">See all messages <i class="ti-arrow-right"></i></a>
+									<div class="message_notification text-center">
+										<a href="{{route('customer_message')}}">See all messages <i class="ti-arrow-right"></i></a>
+									</div>
                                 </div>
                             </li>
 
@@ -141,6 +151,7 @@
 
                                 <div class="dropdown-menu rounded dropdown-menu-right">
                                     <div id="DZ_W_Notification1" class="widget-media dz-scroll p-3 height380">
+										<p style="border-bottom: 1px solid #c1c1c1" class="text-center">New Order Notifications</p>
 										<ul class="timeline">
 											@foreach (App\Models\Order::where('notification_status', 0)->orderBy('created_at','desc')->get() as $notification_status)
 												<li>
@@ -163,7 +174,9 @@
 											@endforeach
 										</ul>
 									</div>
-                                    <a class="all-notification" href="javascript:void(0)">See all notifications <i class="ti-arrow-right"></i></a>
+									<div class="order_notification text-center">
+										<a href="{{route('order_list')}}">See all orders <i class="ti-arrow-right"></i></a>
+									</div>
                                 </div>
                             </li>
 							@php
