@@ -237,7 +237,7 @@ class SslCommerzPaymentController extends Controller
                 'product_id'=>$cart->product_id,
                 'original_price'=>$cart->rel_to_product->price,
                 'discount'=>$cart->rel_to_product->discount,
-                'after_discount'=>$cart->rel_to_product->after_discount,
+                'after_discount'=>($cart->rel_to_product->after_discount)*($cart->quantity),
                 'color_id'=>$cart->color_id,
                 'size_id'=>$cart->size_id,
                 'quantity'=>$cart->quantity,

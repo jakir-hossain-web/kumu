@@ -229,18 +229,16 @@
       </div>
       <div id="project">
         @php
-          $customer_name = App\Models\CustomerLogin::where('id', $customer_id)->first()->name;
-          // $customer_email = App\Models\CustomerLogin::where('id', $customer_id)->first()->email;
+          $customer_id = App\Models\Order::where('order_id', $order_id)->first()->customer_id;
+          $customer_info = App\Models\CustomerLogin::where('id', $customer_id)->first();
           // $customer_address = App\Models\CustomerLogin::where('id', $customer_id)->first()->address;
           // $customer_mobile = App\Models\CustomerLogin::where('id', $customer_id)->first()->mobile;
         @endphp
         <div style="font-weight: 600; font-size: 13px; color: #5D6975; padding-bottom: 5px">Customers Information:</div>
-        {{-- <div style="color: #5D6975; padding-bottom: 2px">Jakir Hossain</div> --}}
-        <div style="color: #5D6975; padding-bottom: 2px">{{$customer_name}}</div>
-        {{-- <div style="color: #5D6975; padding-bottom: 2px">{{Auth::guard('customerlogin')->user()->name}}</div> --}}
-        <div><a href="mailto:jakir0809@gmail.com" style="color: blue; text-decoration: none">jakir0809@gmail.com</a></div>
-        <div style="color: #5D6975; padding: 2px 0 2px 0">1426/A, South Donia, Dhaka</div>
-        <div style="color: #5D6975; padding-bottom: 2px">01922446000</div>
+        <div style="color: #5D6975; padding-bottom: 2px">{{$customer_info->name}}</div>
+        <div><a href="mailto:jakir0809@gmail.com" style="color: blue; text-decoration: none">{{$customer_info->email}}</a></div>
+        <div style="color: #5D6975; padding: 2px 0 2px 0">{{$customer_info->address}}</div>
+        <div style="color: #5D6975; padding-bottom: 2px">{{$customer_info->mobile}}</div>
       </div>
     </header>
     <main>
@@ -277,25 +275,24 @@
             {{-- <td class="common" >{{$orderproduct->after_discount*$orderproduct->quantity}}</td> --}}
           </tr>
           @endforeach
+          @php
+            $order_info = App\Models\Order::where('order_id', $order_id)->first();
+          @endphp
           <tr class="final">
-            <td class="final_amount" colspan="7">Total Original Price</td>
-            <td class="final_amount">{{App\Models\Order::where('order_id', $order_id)->first()->sub_total}}</td>
-          </tr>
-          <tr class="final">
-            <td class="final_amount" colspan="7">(-) Total Sales Discount</td>
-            <td class="final_amount">{{App\Models\Order::where('order_id', $order_id)->first()->sales_discount}}</td>
+            <td class="final_amount" colspan="7">Total Price</td>
+            <td class="final_amount">{{($order_info->sub_total)-($order_info->sales_discount)}}</td>
           </tr>
           <tr class="final">
             <td class="final_amount" colspan="7">(-) Coupon Discount</td>
-            <td class="final_amount">{{App\Models\Order::where('order_id', $order_id)->first()->coupon_discount}}</td>
+            <td class="final_amount">{{$order_info->coupon_discount}}</td>
           </tr>
           <tr class="final">
             <td class="final_amount" colspan="7">(+) Delivery Charge</td>
-            <td class="final_amount">{{App\Models\Order::where('order_id', $order_id)->first()->delivery_charge}}</td>
+            <td class="final_amount">{{$order_info->delivery_charge}}</td>
           </tr>
           <tr class="final">
             <td colspan="7" class="grand total">Grand Total</td>
-            <td class="grand total">{{App\Models\Order::where('order_id', $order_id)->first()->total}}</td>
+            <td class="grand total">{{$order_info->total}}</td>
           </tr>
         </tbody>
       </table>

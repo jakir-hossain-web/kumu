@@ -262,20 +262,15 @@
                   <table width="480" border="0" cellpadding="0" cellspacing="0" align="center" class="fullPadding">
                     <tbody>
                         
+                      @php
+                        $order_info = App\Models\Order::where('order_id', $order_id)->first();
+                      @endphp
                       <tr>
                         <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
-                          Total Original Price:
+                          Total Price:
                         </td>
                         <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; white-space:nowrap;" width="80">
-                            {{App\Models\Order::where('order_id', $order_id)->first()->sub_total}}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
-                          (-) Total Sales Discount:
-                        </td>
-                        <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
-                            {{App\Models\Order::where('order_id', $order_id)->first()->sales_discount}}
+                            {{($order_info->sub_total)-($order_info->sales_discount)}}
                         </td>
                       </tr>
                       <tr>
@@ -283,7 +278,7 @@
                           (-) Coupon Discount:
                         </td>
                         <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
-                            {{App\Models\Order::where('order_id', $order_id)->first()->coupon_discount}}
+                            {{$order_info->coupon_discount}}
                         </td>
                       </tr>
                       <tr>
@@ -291,7 +286,7 @@
                           (+) Delivery Charge:
                         </td>
                         <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
-                            {{App\Models\Order::where('order_id', $order_id)->first()->delivery_charge}}
+                            {{$order_info->delivery_charge}}
                         </td>
                       </tr>
                       <tr>
@@ -299,7 +294,7 @@
                           <strong>Grand Total:</strong>
                         </td>
                         <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #000; line-height: 22px; vertical-align: top; text-align:right; ">
-                          <strong>{{App\Models\Order::where('order_id', $order_id)->first()->total}}</strong>
+                          <strong>{{$order_info->total}}</strong>
                         </td>
                       </tr>
                       

@@ -240,11 +240,11 @@ class CustomerProfileController extends Controller
 
     function Download_invoice($order_id){
         $order_id = '#'.$order_id;
-        $customer_id= Order::where('order_id', $order_id)->first()->customer_id;
+        // $customer_id= Order::where('order_id', $order_id)->first()->customer_id;
 
         $pdf = PDF::loadView('invoice.invoice_download', [
             'order_id'=>$order_id,
-            'customer_id'=>$customer_id,
+            // 'customer_id'=>$customer_id,
         ]);
         return $pdf->download('invoice.pdf');
         

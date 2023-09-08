@@ -114,7 +114,7 @@
                                             {{$message->your_reply}}
                                         </td>
                                         <td>
-                                            <button style="cursor: default" type="button" class="btn_design btn-danger message_sended_btn">Sended</button>
+                                            <button style="cursor: default" type="button" class="btn_design btn-danger message_sended_btn">Replied</button>
                                         </td>
                                     </form>
                                 </tr> 
