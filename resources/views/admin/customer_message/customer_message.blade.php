@@ -204,7 +204,7 @@
                 background: '#01186d',
                 color: '#d1d1d1',
                 iconColor: '#d1d1d1'
-                })
+            })
         });
     </script>
 

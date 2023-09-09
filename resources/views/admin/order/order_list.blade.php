@@ -26,6 +26,7 @@
                             <th>Order Date</th>
                             <th>Order Status</th>
                             <th>Order Details</th>
+                            <th>Invoice</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -63,6 +64,9 @@
                                 </td>
                                 <td>
                                     <a href="{{route('order.details', $order->id)}}" class="badge text-white bg-secondary">View</a>
+                                </td>
+                                <td>
+                                    <a href="{{route('Download_invoice', substr($order->order_id,1))}}" class="badge text-white bg-success">Download</a>
                                 </td>
                                 @can('order_status_change')
                                     <td>

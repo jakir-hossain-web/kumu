@@ -15,6 +15,7 @@ class OrderController extends Controller
     function order_status_update(Request $request){
         Order::where('order_id', $request->order_id)->update([
             'order_status'=> $request->order_status,
+            'notification_status'=>1,
         ]);
          return back()->with('order_status_update','Order Status Update Successfully!');
     }

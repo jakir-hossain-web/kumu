@@ -4,6 +4,16 @@
     .view_update_status .form-control{
         height: 35px !important;
     }
+    .download_invoice{
+        margin: 0 auto;
+    }
+    .download_invoice a{
+        padding: 15px 50px;
+        display: block;
+        text-align: center;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
 </style>
 
 @section('content')
@@ -116,6 +126,9 @@
                     </div>
                 </div>  
             </div>          
+            <div class="download_invoice">
+                <a class="bg-primary text-white" href="{{route('Download_invoice', substr($view_order_id,1))}}">Download Invoice</a>
+            </div>
         </div>
     </div>
 

@@ -188,6 +188,15 @@
         padding: 8px 0;
         text-align: center;
       }
+      .paid{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+        font-size: 100px;
+        font-weight: 700;
+        color: rgba(0, 0, 0, 0.30);
+      }
     </style>
 
   </head>
@@ -231,8 +240,6 @@
         @php
           $customer_id = App\Models\Order::where('order_id', $order_id)->first()->customer_id;
           $customer_info = App\Models\CustomerLogin::where('id', $customer_id)->first();
-          // $customer_address = App\Models\CustomerLogin::where('id', $customer_id)->first()->address;
-          // $customer_mobile = App\Models\CustomerLogin::where('id', $customer_id)->first()->mobile;
         @endphp
         <div style="font-weight: 600; font-size: 13px; color: #5D6975; padding-bottom: 5px">Customers Information:</div>
         <div style="color: #5D6975; padding-bottom: 2px">{{$customer_info->name}}</div>
@@ -270,9 +277,7 @@
             <td class="common" >{{$orderproduct->quantity}}</td>
             <td class="common" >{{$orderproduct->original_price}}</td>
             <td class="common" >{{$per_unit_discount}}</td>
-            {{-- <td class="common" >{{($orderproduct->original_price)*($orderproduct->quantity) - ($orderproduct->after_discount)}}</td> --}}
             <td class="common" >{{$orderproduct->after_discount}}</td>
-            {{-- <td class="common" >{{$orderproduct->after_discount*$orderproduct->quantity}}</td> --}}
           </tr>
           @endforeach
           @php
@@ -304,6 +309,12 @@
         <div class="notice">3. You can cancel the order within 2 days from order placement date.</div>
         <div class="notice">4. After 2 days from order placement date order cancelision charge wiil be applicable (Tk. 100 + Delivery Charge).</div>
       </div>
+      @if (App\Models\Order::where('order_id', $order_id)->first()->payment_method ==2)
+        <div class="paid">PAID</div>
+      @endif
+      @if (App\Models\Order::where('order_id', $order_id)->first()->payment_method ==3)
+        <div class="paid">PAID</div>
+      @endif
     </main>
     <footer>
       *** Invoice was created from our computer system and it is valid without our signature and seal. ***

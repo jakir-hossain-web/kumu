@@ -18,6 +18,10 @@ class CustomerMessageController extends Controller
     }
 
     function customer_message_details($message_id){
+        CustomerMessage::where('id', $message_id)->update([
+            'notification_status'=>1,
+        ]);
+
         $message_info = CustomerMessage::find($message_id);
         return view('admin.customer_message.customer_message_details',[
             'message_info'=>$message_info,
@@ -33,6 +37,7 @@ class CustomerMessageController extends Controller
 
         CustomerMessage::where('id', $message_id)->update([
             'your_reply'=>$reply_message,
+            'notification_status'=>1,
         ]);
 
         Mail::to($customer_email_address)->send(new ReplyMail($message_id));

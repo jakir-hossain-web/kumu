@@ -35,14 +35,14 @@
 			bottom: 0px;
 			left: 0;
 			padding: 15px 75px 15px 75px;
-			background: #fff;
+			background: #e0e0e0;
 		}
 		.order_notification{
 			position: absolute;
 			bottom: 0px;
 			left: 0;
 			padding: 15px 91px 15px 91px;
-			background: #fff;
+			background: #e0e0e0;
 		}
 	</style>
 
@@ -112,28 +112,35 @@
 							</li>
 
 							{{-- ========== Customer message notification =========== --}}
+							@php
+								$total_new_message = App\Models\CustomerMessage::where('notification_status', 0)->count();
+							@endphp
 							<li class="nav-item dropdown notification_dropdown">
                                 <a class="nav-link  ai-icon" href="javascript:void(0)" role="button" data-toggle="dropdown">
                                     <i class="fa fa-envelope"></i>
-									<div class="pulse-css text-primary text-center">{{App\Models\CustomerMessage::where('notification_status', 0)->count()}}</div>
+									<div class="pulse-css text-primary text-center">{{$total_new_message}}</div>
                                 </a>
 
                                 <div class="dropdown-menu rounded dropdown-menu-right">
                                     <div id="DZ_W_Notification1" class="widget-media dz-scroll p-3 height380">
 										<p style="border-bottom: 1px solid #c1c1c1" class="text-center">New Message Notifications</p>
 										<ul class="timeline">
-											@foreach (App\Models\CustomerMessage::where('notification_status', 0)->orderBy('created_at','desc')->get() as $notification_status)
-												<li>
-													<a href="{{route('customer_message_details', $notification_status->id)}}">
-														<div class="timeline-panel">
-															<div class="media-body text-center">
-																<h6 class="mb-1">{{$notification_status->name}}</h6>
-																<small class="d-block">{{$notification_status->created_at->format('d M, Y')}}</small>
+											@if ($total_new_message == 0)
+												<p class="text-center font-weight-bold text-danger">No New Message</p>
+												@else
+												@foreach (App\Models\CustomerMessage::where('notification_status', 0)->orderBy('created_at','desc')->get() as $message)
+													<li>
+														<a href="{{route('customer_message_details', $message->id)}}">
+															<div class="timeline-panel">
+																<div class="media-body text-center">
+																	<h6 class="mb-1">{{$message->name}}</h6>
+																	<small class="d-block">{{$message->created_at->format('d M, Y')}}</small>
+																</div>
 															</div>
-														</div>
-													</a>
-												</li>
-											@endforeach
+														</a>
+													</li>
+												@endforeach
+											@endif										
 										</ul>
 									</div>
 									<div class="message_notification text-center">
@@ -143,35 +150,42 @@
                             </li>
 
 							{{-- ============= Order placed notification ============= --}}
+							@php
+								$total_new_order = App\Models\Order::where('notification_status', 0)->count();
+							@endphp
 							<li class="nav-item dropdown notification_dropdown">
                                 <a class="nav-link  ai-icon" href="javascript:void(0)" role="button" data-toggle="dropdown">
                                     <i class="fa fa-shopping-bag"></i>
-									<div class="pulse-css text-primary text-center">{{App\Models\Order::where('notification_status', 0)->count()}}</div>
+									<div class="pulse-css text-primary text-center">{{$total_new_order}}</div>
                                 </a>
 
                                 <div class="dropdown-menu rounded dropdown-menu-right">
                                     <div id="DZ_W_Notification1" class="widget-media dz-scroll p-3 height380">
 										<p style="border-bottom: 1px solid #c1c1c1" class="text-center">New Order Notifications</p>
 										<ul class="timeline">
-											@foreach (App\Models\Order::where('notification_status', 0)->orderBy('created_at','desc')->get() as $notification_status)
-												<li>
-													<a href="{{route('order.details', $notification_status->id)}}">
-														<div class="timeline-panel">
-															<div class="media mr-2">
-																@if ($notification_status->rel_to_customer->profile_image == null)
-																	<img alt="image" width="50" src="{{ Avatar::create($notification_status->rel_to_customer->name)->toBase64() }}" />
-																	@else
-																	<img alt="image" width="50" src="{{asset('uploads/customer')}}/{{$notification_status->rel_to_customer->profile_image}}">
-																@endif
+											@if ($total_new_order == 0)
+												<p class="text-center font-weight-bold text-danger">No New Order</p>
+												@else
+												@foreach (App\Models\Order::where('notification_status', 0)->orderBy('created_at','desc')->get() as $notification_status)
+													<li>
+														<a href="{{route('order.details', $notification_status->id)}}">
+															<div class="timeline-panel">
+																<div class="media mr-2">
+																	@if ($notification_status->rel_to_customer->profile_image == null)
+																		<img alt="image" width="50" src="{{ Avatar::create($notification_status->rel_to_customer->name)->toBase64() }}" />
+																		@else
+																		<img alt="image" width="50" src="{{asset('uploads/customer')}}/{{$notification_status->rel_to_customer->profile_image}}">
+																	@endif
+																</div>
+																<div class="media-body">
+																	<h6 class="mb-1">{{$notification_status->rel_to_customer->name}}</h6>
+																	<small class="d-block">{{$notification_status->created_at->format('d M, Y')}}</small>
+																</div>
 															</div>
-															<div class="media-body">
-																<h6 class="mb-1">{{$notification_status->rel_to_customer->name}}</h6>
-																<small class="d-block">{{$notification_status->created_at->format('d M, Y')}}</small>
-															</div>
-														</div>
-													</a>
-												</li>
-											@endforeach
+														</a>
+													</li>
+												@endforeach
+											@endif
 										</ul>
 									</div>
 									<div class="order_notification text-center">
