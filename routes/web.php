@@ -222,6 +222,7 @@ Route::get('/charge/force_delete/{delivery_charge_id}', [ChargeController::class
 
 // customer orders ============
 Route::get('/order/list', [OrderController::class, 'order_list'])->name('order_list');
+Route::post('/order/list/search', [OrderController::class, 'search_order_list'])->name('search_order_list');
 Route::get('/order/details/{view_order_sl_no}', [OrderController::class, 'order_details'])->name('order.details');
 Route::post('/order/status/update', [OrderController::class, 'order_status_update'])->name('order_status_update');
 

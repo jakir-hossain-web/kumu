@@ -1,5 +1,21 @@
 @extends('layouts.dashboard')
 
+<style>
+    .search_form_select{
+        color: #474747 !important;
+        border: 1px solid #0B2A97 !important;
+        margin-right: 10px !important;
+        width: 60%;
+    }
+    .search_btn{
+        width: 20%;
+        margin-right: 10px !important;
+    }
+    .refresh_btn{
+        width: 20%;
+    }
+</style>
+
 
 @section('content')
 <div class="page-titles">
@@ -9,11 +25,33 @@
     </ol>
 </div>
 
+<div class="search_by_status mb-3">
+    <form id="search_btn" action="{{route('search_order_list')}}" method="POST">
+        @csrf
+        <div class="search_form d-flex">
+            <input type="hidden" name="search_order_status" value="0" class="search_order_status">
+            <select name="status" class="search_form_select form-control" value="{{old('status')}}">
+                <option value="0">---Select Order Status ---</option>
+                <option value="1" {{$order_status==1?'selected':''}}>Placed</option>
+                <option value="2" {{$order_status==2?'selected':''}}>Confirmed</option>
+                <option value="3" {{$order_status==3?'selected':''}}>Processing</option>
+                <option value="4" {{$order_status==4?'selected':''}}>On Delivery</option>
+                <option value="5" {{$order_status==5?'selected':''}}>Delivered</option>
+                <option value="6" {{$order_status==6?'selected':''}}>Canceled</option>
+                <option value="7" {{$order_status==7?'selected':''}}>All Orders</option>
+            </select>
+            <Button type="submit" class="btn btn-primary search_btn">Search</Button>
+            <Button type="submit" class="btn btn-success refresh_btn">Refresh</Button>
+        </div>
+    </form>
+</div>
+
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header bg-primary">
                 <h4 style="color: #fff">Order List</h4>
+                </h4>
             </div>
             <div class="card-body">
                 <table class="table table-striped" id="orderTable">
@@ -31,13 +69,25 @@
                         </tr>
                     </thead>
 
+                    @php
+                        if($order_status == 0){
+                            $orders = App\Models\Order::orderBy('created_at','desc')->get();
+                        }
+                        else if($order_status == 7){
+                            $orders = App\Models\Order::orderBy('created_at','desc')->get();
+                        }
+                        else(
+                            $orders = App\Models\Order::where('order_status', $order_status)->orderBy('created_at','desc')->get()
+                        )
+                    @endphp
+
                     <tbody>
-                        @foreach (App\Models\Order::orderBy('created_at','desc')->get(); as $sl=>$order)
+                        @foreach ($orders as $sl=>$order)   
                             <tr class="text-center">
                                 <td>{{$sl+1}}</td>
                                 <td>{{$order->order_id}}</td>
                                 <td>
-                                    @if ($order->payment_method == 1)
+                                    @if ($order->payment_method == 1)   
                                         {{'Cash'}}
                                         @elseif ($order->payment_method == 2)
                                         {{'SSL'}}
@@ -103,6 +153,37 @@
 
 
 @section('footer_script')
+
+    <script>
+        $('.refresh_btn').click(function() {
+            var this_val = 0;
+            $('.search_order_status').val(this_val);
+            $('#search_btn').submit();
+        });
+    </script>
+
+    <script>
+        $('.search_btn').click(function(event){
+            var this_val = $('.search_form_select').val();
+            
+            if(this_val == 0){
+                event.preventDefault(); // Prevent the default form submission
+                Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                text: "Select Order Status First!",
+                showConfirmButton: false,
+                background: '#01186d',
+                color: '#d1d1d1',
+                iconColor: '#d1d1d1'
+                })
+            }
+            else{
+                $('.search_order_status').val(this_val);
+                $('#search_btn').submit();
+            }
+        });
+    </script>
 
     @if (session('order_status_update'))
         <script>

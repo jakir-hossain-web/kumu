@@ -14,6 +14,9 @@
         border-radius: 10px;
         margin-bottom: 10px;
     }
+    .order_details_top{
+        padding: 1.875rem 1.875rem 0 1.875rem !important;
+    }
 </style>
 
 @section('content')
@@ -45,7 +48,7 @@
     <div class="col-lg-12">
         <div class="card" style="border: 1px solid blue">
             <div class="row">
-                <div class="card-body d-flex justify-content-start">
+                <div class="card-body d-flex justify-content-start order_details_top">
                     <div class="col-lg-4">
                         <h4 class="bg-primary text-white pt-2 pb-2 pl-3" style="border-radius: 12px 12px 0 0">Order by</h4>
                         <div class="d-flex justify-content-start customer_profile_main mt-3">
