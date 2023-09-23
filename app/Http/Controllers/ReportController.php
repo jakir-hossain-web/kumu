@@ -13,4 +13,5 @@ class ReportController extends Controller
     function report_download(Request $request){
         print_r($request->all());
     }
+    
 }

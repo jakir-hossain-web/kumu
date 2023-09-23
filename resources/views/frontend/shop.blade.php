@@ -284,8 +284,10 @@
                                         {{-- ======= rating end ======= --}}
 
                                         <div class="elis_rty">
-                                            <span class="ft-medium text-muted line-through fs-sm mr-2">&#2547; {{$product->price}}</span>
-                                            <span class="ft-bold text-dark fs-sm">&#2547; {{$product->after_discount}}/-</span>
+                                            @if ($product->discount)                                               
+                                                <span class="ft-medium text-muted line-through fs-md mr-2">&#2547; {{$product->price}}/-</span>                                               
+                                            @endif                             
+                                            <span class="ft-bold text-dark fs-sm">&#2547; {{$product->after_discount}}/-</span>                                           
                                         </div>
                                     </div>
                                 </div>

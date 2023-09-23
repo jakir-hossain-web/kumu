@@ -36,11 +36,32 @@
       .visibleMobile { display: block !important; }
       .hiddenMobile { display: none !important; }
       }
+
+      .visit_site{
+          margin: 20px 0 10px 0;
+      }
+      .visit_site a{
+          background: #0B2A97;
+          color: #fff;
+          padding: 10px 25px;
+          border-radius: 10px;
+          text-decoration: none;
+      }
     </style>
 </head>
 <body>
-<!-- Header -->
-<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#e1e1e1">
+  {{-- mail start --}}
+  @php
+    $customer_name = Auth::guard('customerlogin')->user()->name;
+  @endphp
+  <div style="margin-bottom:15px">
+    <h3>Hello <span>{{$customer_name}},</span></h3>
+    <p style="line-height: 18px; font-weight: 700">Welcome to Pikter IT</p>
+    <p style="line-height: 18px">We received one order from you as on <span style="font-weight: 700">{{App\Models\Order::where('order_id', $order_id)->first()->created_at->format('d M,Y')}}</span> against <span style="font-weight: 700">Order ID- {{$order_id}}</span>. The following is your order details-</p>
+  </div>
+
+  <!-- invoice header start -->
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#e1e1e1">
     <tr>
       <td height="20"></td>
     </tr>
@@ -63,7 +84,7 @@
                       <table width="220" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
                         <tbody>
                           <tr>
-                            <td align="left"> <img src="https://i.postimg.cc/c4hx0NFH/1200px-Laravel-svg.png" width="32" height="32" alt="logo" border="0" /></td>
+                            <td align="left"> <img style="border-radius: 50%; width: 65px" src="https://i.postimg.cc/wTyd0LCj/channels4-profile.jpg" alt="logo" border="0" /></td>
                           </tr>
                           <tr class="hiddenMobile">
                             <td height="40"></td>
@@ -74,7 +95,7 @@
                           <tr>
                             <td style="font-size: 12px; color: #5b5b5b; font-family: 'Open Sans', sans-serif; line-height: 18px; vertical-align: top; text-align: left;">
                               Hello, {{Auth::guard('customerlogin')->user()->name}}.
-                              <br> Thank you for shopping from our store and for your order.
+                              <br> Thank you for shopping with us.
                             </td>
                           </tr>
                         </tbody>
@@ -100,7 +121,7 @@
                             <td height="20"></td>
                           </tr>
                           <tr>
-                            <td style="font-size: 12px; color: #5b5b5b; font-family: 'Open Sans', sans-serif; line-height: 18px; vertical-align: top; text-align: right;">
+                            <td style="padding-top: 25px; font-size: 12px; color: #5b5b5b; font-family: 'Open Sans', sans-serif; line-height: 18px; vertical-align: top; text-align: right;">
                               <small>Order ID: </small> {{$order_id}}<br />
                               <small>{{App\Models\Order::where('order_id', $order_id)->first()->created_at->format('d-M-Y')}}</small>
                             </td>
@@ -117,8 +138,8 @@
       </td>
     </tr>
   </table>
-  <!-- /Header -->
-  <!-- Order Details -->
+  <!-- invoice Header end -->
+  <!-- Order Details start -->
   <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#e1e1e1">
     <tbody>
       <tr>
@@ -154,11 +175,11 @@
                             </th>
 
                             <th style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; font-weight: bold; line-height: 1; vertical-align: top; padding: 0 0 7px;" align="center">
-                            Price
+                            Unit Price
                             </th>
 
                             <th style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; font-weight: bold; line-height: 1; vertical-align: top; padding: 0 0 7px;" width="15%" align="center">
-                            Discount
+                            Unit Discount
                             </th>
 
                             <th style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33; font-weight: bold; line-height: 1; vertical-align: top; padding: 0 0 7px;" align="right">
@@ -173,6 +194,12 @@
                         </tr> --}}
 
                         @foreach (App\Models\OrderProduct::where('order_id', $order_id)->get() as $orderproduct)
+
+                        @php
+                          $total_original_price = ($orderproduct->original_price)*($orderproduct->quantity);
+                          $total_discount = $total_original_price - $orderproduct->after_discount;
+                          $per_unit_discount = $total_discount/$orderproduct->quantity;
+                        @endphp
                             <tr>
                                 <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #000;  line-height: 18px;  vertical-align: top; padding:10px 0;" class="article">
                                 {{$orderproduct->rel_to_product->product_name}}
@@ -195,11 +222,11 @@
                                 </td>
                                 
                                 <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center">
-                                {{$orderproduct->original_price - $orderproduct->after_discount}}
+                                {{$per_unit_discount}}
                                 </td>
 
                                 <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right">
-                                {{$orderproduct->after_discount*$orderproduct->quantity}}
+                                {{$orderproduct->after_discount}}
                                 </td>
 
                             </tr>
@@ -220,8 +247,8 @@
       </tr>
     </tbody>
   </table>
-  <!-- /Order Details -->
-  <!-- Total -->
+  <!-- /Order Details end -->
+  <!-- Total start -->
   <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#e1e1e1">
     <tbody>
       <tr>
@@ -235,44 +262,39 @@
                   <table width="480" border="0" cellpadding="0" cellspacing="0" align="center" class="fullPadding">
                     <tbody>
                         
+                      @php
+                        $order_info = App\Models\Order::where('order_id', $order_id)->first();
+                      @endphp
                       <tr>
                         <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
-                          Original Price:
+                          Total Price:
                         </td>
                         <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; white-space:nowrap;" width="80">
-                            {{App\Models\Order::where('order_id', $order_id)->first()->sub_total}}
+                            {{($order_info->sub_total)-($order_info->sales_discount)}}
                         </td>
                       </tr>
                       <tr>
                         <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
-                          Sales Discount:
+                          (-) Coupon Discount:
                         </td>
                         <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
-                            {{App\Models\Order::where('order_id', $order_id)->first()->sales_discount}}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
-                          Coupon Discount:
-                        </td>
-                        <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
-                            {{App\Models\Order::where('order_id', $order_id)->first()->coupon_discount}}
+                            {{$order_info->coupon_discount}}
                         </td>
                       </tr>
                       <tr>
                         <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
-                          Delivery Charge:
+                          (+) Delivery Charge:
                         </td>
                         <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
-                            {{App\Models\Order::where('order_id', $order_id)->first()->delivery_charge}}
+                            {{$order_info->delivery_charge}}
                         </td>
                       </tr>
                       <tr>
                         <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #000; line-height: 22px; vertical-align: top; text-align:right; ">
-                          <strong>Grand Total (Incl.Tax)</strong>
+                          <strong>Grand Total:</strong>
                         </td>
                         <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #000; line-height: 22px; vertical-align: top; text-align:right; ">
-                          <strong>{{App\Models\Order::where('order_id', $order_id)->first()->total}}</strong>
+                          <strong>{{$order_info->total}}</strong>
                         </td>
                       </tr>
                       
@@ -288,8 +310,8 @@
       </tr>
     </tbody>
   </table>
-  <!-- /Total -->
-  <!-- Information -->
+  <!-- /Total end -->
+  <!-- Information start -->
   <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#e1e1e1">
     <tbody>
       <tr>
@@ -389,7 +411,7 @@
       </tr>
     </tbody>
   </table>
-  <!-- /Information -->
+  <!-- /Information end -->
   <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#e1e1e1">
 
     <tr>
@@ -402,7 +424,7 @@
                   <tr>
                     {{-- ========== download invoice ========== --}}
                     <td style="font-size: 12px; color: #5b5b5b; font-family: 'Open Sans', sans-serif; line-height: 18px; vertical-align: top; text-align: center;">
-                      <a href="{{route('Download_invoice', substr($order_id,1))}}" style="background: blue; color: #fff; padding: 10px 20px; font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 600; text-decoration: none">Download Invoice</a>
+                      <a href="{{route('Download_invoice', substr($order_id,1))}}" style="background: #0B2A97; color: #fff; padding: 10px 20px; font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 600; text-decoration: none; border-radius: 10px">Download Invoice</a>
                     </td>
                   </tr>
                 </tbody>
@@ -420,5 +442,27 @@
       <td height="20"></td>
     </tr>
   </table>
+
+  <div>
+    <h4 style="line-height: 5px">Thank you for visiting our website & for your order.</h4>
+    <h4 style="padding-bottom: 15px; line-height: 5px">Wish you will be always with us.</h4>
+
+    <a href="https://pikterit.com/"><img style="border-radius: 50%; width: 80px" src="https://i.postimg.cc/wTyd0LCj/channels4-profile.jpg" alt="logo"></a>
+    <h2 style="line-height:18px"> Pikter <span style="color: red">IT</span></h2>
+    <p style="line-height: 18px">Shop No-309, Level-3</p>
+    <p style="line-height: 18px">Multiplan Center</p>
+    <p style="line-height: 18px">Elephent Road, Dhaka.</p>
+    <p style="line-height: 18px"> <span>Email:</span> pikterit@gmail.com</p>
+    <p style="line-height: 18px"> <span>Website:</span> https://pikterit.com</p>
+    <p style="line-height: 18px">Contact: 01623486100 & 01623486101</p>
+    <div class="visit_site"><a href="https://pikterit.com/">Visit Our Website</a></div>
+    <div>
+        <span style="margin: 0 10px 0 0"><a href="https://www.facebook.com/pikteritltd"><img style="width: 28px" src="https://i.postimg.cc/Qt6zR201/facebook-174848.png" alt="facebook"></a></span>
+        <span style="margin: 10px 10px 0 0"><a href="https://www.youtube.com/@pikterit"><img style="width: 33px" src="https://i.postimg.cc/k45S2KsW/youtube-1384060.png" alt="youtube"></a></span>
+        <span style="0 10px 0 0"><a href="https://pikterit.com/"><img style="width: 28px" src="https://i.postimg.cc/MH2s2z1c/planet-earth-921490.png" alt="website"></a></span>
+    </div>
+  </div>
+
+  
 </body>
 </html>

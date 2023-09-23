@@ -8,6 +8,7 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomerLoginController;
 use App\Http\Controllers\CustomerRegisterController;
 use App\Http\Controllers\CustomerProfileController;
+use App\Http\Controllers\CustomerMessageController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Frontendcontroller;
@@ -37,6 +38,8 @@ use App\Http\Controllers\ReportController;
 
 Route::get('/', [Frontendcontroller::class, 'home'])->name('front.home');
 Route::get('/shop', [Frontendcontroller::class, 'shop'])->name('shop');
+Route::get('/about_us', [Frontendcontroller::class, 'about_us'])->name('about_us');
+Route::get('/contact', [Frontendcontroller::class, 'contact'])->name('contact');
 Route::get('/catagory_product/{catagory_id}', [Frontendcontroller::class, 'catagory_product'])->name('catagory_product');
 Route::get('/product/details/{slug}', [Frontendcontroller::class, 'product_details'])->name('product.details');
 Route::post('/getSize', [Frontendcontroller::class, 'getSize']);
@@ -120,6 +123,9 @@ Route::get('/customer/email_verify/{token}', [CustomerRegisterController::class,
 // 404 page ====================
 Route::get('/404', [Frontendcontroller::class, 'error_404'])->name('404');
 
+// contact page ================
+Route::post('/contact/message', [Frontendcontroller::class, 'contact_message'])->name('contact_message');
+
 
 
 
@@ -131,7 +137,6 @@ Route::get('/404', [Frontendcontroller::class, 'error_404'])->name('404');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::post('/home/custom_search', [App\Http\Controllers\HomeController::class, 'home_custom_search'])->name('home.custom_search');
 
 // users =======
 Route::get('/user', [Usercontroller::class, 'user'])->name('user');
@@ -217,6 +222,7 @@ Route::get('/charge/force_delete/{delivery_charge_id}', [ChargeController::class
 
 // customer orders ============
 Route::get('/order/list', [OrderController::class, 'order_list'])->name('order_list');
+Route::post('/order/list/search', [OrderController::class, 'search_order_list'])->name('search_order_list');
 Route::get('/order/details/{view_order_sl_no}', [OrderController::class, 'order_details'])->name('order.details');
 Route::post('/order/status/update', [OrderController::class, 'order_status_update'])->name('order_status_update');
 
@@ -240,6 +246,13 @@ Route::post('/user/role/permission_remove', [RoleManagerController::class, 'role
 Route::post('/getPermission', [RoleManagerController::class, 'getPermission']);
 
 
+// customer message =================
+Route::get('/customer/message', [CustomerMessageController::class, 'customer_message'])->name('customer_message');
+Route::get('/customer/message/details/{message_id}', [CustomerMessageController::class, 'customer_message_details'])->name('customer_message_details');
+Route::post('/customer/message/reply', [CustomerMessageController::class, 'reply_customer_message'])->name('reply_customer_message');
+
+
 // report =================
 Route::get('/report', [ReportController::class, 'report'])->name('report');
 Route::post('/report/download', [ReportController::class, 'report_download'])->name('report.download');
+

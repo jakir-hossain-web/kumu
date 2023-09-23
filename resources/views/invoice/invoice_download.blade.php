@@ -188,17 +188,26 @@
         padding: 8px 0;
         text-align: center;
       }
+      .paid{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+        font-size: 100px;
+        font-weight: 700;
+        color: rgba(0, 0, 0, 0.30);
+      }
     </style>
 
   </head>
   <body>
     <header class="clearfix">
       <div id="logo">
-        <img src="https://i.postimg.cc/c4hx0NFH/1200px-Laravel-svg.png" alt="logo" />
-        <div class="company_name">Laravel Company ltd.</div>
-        <div class="company_info">House No-113, Road No-4, Dhandomdi 4/A, Dhaka</div>
-        <div><a href="mailto:laravelcompany@gmail.com" class="company_email">laravelcompany@gmail.com</a></div>
-        <div class="company_info">Contact: 01944558866, 01944558877, 02-9158751</div>
+        <img style="border-radius: 50%; width: 80px" src="https://i.postimg.cc/wTyd0LCj/channels4-profile.jpg" alt="logo" />
+        <div class="company_name"><span style="color: #000">Pikter</span> <span style="color: red">IT</span></div>
+        <div class="company_info">Shop No-309, Level-3, Multiplan Center, Elephent Road, Dhaka.</div>
+        <div><a href="mailto:laravelcompany@gmail.com" class="company_email">pikterit@gmail.com</a></div>
+        <div class="company_info">Contact: 01623486100, 01623486101</div>
       </div >
         <h1 class="invoice_head">Invoice No: <span class="invoice_number">{{$order_id}}</span> 
           <span class="invoice_span" style="text-align: right">Payment Method <div style="font-size: 12px">
@@ -228,11 +237,15 @@
         <div style="color: #5D6975; padding-bottom: 2px">{{App\Models\BillingDetails::where('order_id', $order_id)->first()->mobile}}</div>
       </div>
       <div id="project">
+        @php
+          $customer_id = App\Models\Order::where('order_id', $order_id)->first()->customer_id;
+          $customer_info = App\Models\CustomerLogin::where('id', $customer_id)->first();
+        @endphp
         <div style="font-weight: 600; font-size: 13px; color: #5D6975; padding-bottom: 5px">Customers Information:</div>
-        <div style="color: #5D6975; padding-bottom: 2px">{{Auth::guard('customerlogin')->user()->name}}</div>
-        <div><a href="mailto:jakir0809@gmail.com" style="color: blue; text-decoration: none">jakir0809@gmail.com</a></div>
-        <div style="color: #5D6975; padding: 2px 0 2px 0">1426/A, South Donia, Dhaka</div>
-        <div style="color: #5D6975; padding-bottom: 2px">01922446000</div>
+        <div style="color: #5D6975; padding-bottom: 2px">{{$customer_info->name}}</div>
+        <div><a href="mailto:jakir0809@gmail.com" style="color: blue; text-decoration: none">{{$customer_info->email}}</a></div>
+        <div style="color: #5D6975; padding: 2px 0 2px 0">{{$customer_info->address}}</div>
+        <div style="color: #5D6975; padding-bottom: 2px">{{$customer_info->mobile}}</div>
       </div>
     </header>
     <main>
@@ -244,13 +257,18 @@
             <th class="common" >Color</th>
             <th class="common" >Size</th>
             <th class="common" >Quantity</th>
-            <th class="common" >Price</th>
-            <th class="common" >Discount</th>
+            <th class="common" >Unit Price</th>
+            <th class="common" >Unit Discount</th>
             <th class="common" >Total</th>
           </tr>
         </thead>
         <tbody>
           @foreach (App\Models\OrderProduct::where('order_id', $order_id)->get() as $sl=>$orderproduct)
+          @php
+            $total_original_price = ($orderproduct->original_price)*($orderproduct->quantity);
+            $total_discount = $total_original_price - $orderproduct->after_discount;
+            $per_unit_discount = $total_discount/$orderproduct->quantity;
+          @endphp
           <tr>
             <td class="common" >{{$sl+1}}</td>
             <td class="common" >{{$orderproduct->rel_to_product->product_name}}</td>
@@ -258,29 +276,28 @@
             <td class="common" >{{$orderproduct->rel_to_size->size_name}}</td>
             <td class="common" >{{$orderproduct->quantity}}</td>
             <td class="common" >{{$orderproduct->original_price}}</td>
-            <td class="common" >{{$orderproduct->original_price - $orderproduct->after_discount}}</td>
-            <td class="common" >{{$orderproduct->after_discount*$orderproduct->quantity}}</td>
+            <td class="common" >{{$per_unit_discount}}</td>
+            <td class="common" >{{$orderproduct->after_discount}}</td>
           </tr>
           @endforeach
+          @php
+            $order_info = App\Models\Order::where('order_id', $order_id)->first();
+          @endphp
           <tr class="final">
-            <td class="final_amount" colspan="7">Original Price</td>
-            <td class="final_amount">{{App\Models\Order::where('order_id', $order_id)->first()->sub_total}}</td>
-          </tr>
-          <tr class="final">
-            <td class="final_amount" colspan="7">(-) Sales Discount</td>
-            <td class="final_amount">{{App\Models\Order::where('order_id', $order_id)->first()->sales_discount}}</td>
+            <td class="final_amount" colspan="7">Total Price</td>
+            <td class="final_amount">{{($order_info->sub_total)-($order_info->sales_discount)}}</td>
           </tr>
           <tr class="final">
             <td class="final_amount" colspan="7">(-) Coupon Discount</td>
-            <td class="final_amount">{{App\Models\Order::where('order_id', $order_id)->first()->coupon_discount}}</td>
+            <td class="final_amount">{{$order_info->coupon_discount}}</td>
           </tr>
           <tr class="final">
             <td class="final_amount" colspan="7">(+) Delivery Charge</td>
-            <td class="final_amount">{{App\Models\Order::where('order_id', $order_id)->first()->delivery_charge}}</td>
+            <td class="final_amount">{{$order_info->delivery_charge}}</td>
           </tr>
           <tr class="final">
             <td colspan="7" class="grand total">Grand Total</td>
-            <td class="grand total">{{App\Models\Order::where('order_id', $order_id)->first()->total}}</td>
+            <td class="grand total">{{$order_info->total}}</td>
           </tr>
         </tbody>
       </table>
@@ -292,9 +309,15 @@
         <div class="notice">3. You can cancel the order within 2 days from order placement date.</div>
         <div class="notice">4. After 2 days from order placement date order cancelision charge wiil be applicable (Tk. 100 + Delivery Charge).</div>
       </div>
+      @if (App\Models\Order::where('order_id', $order_id)->first()->payment_method ==2)
+        <div class="paid">PAID</div>
+      @endif
+      @if (App\Models\Order::where('order_id', $order_id)->first()->payment_method ==3)
+        <div class="paid">PAID</div>
+      @endif
     </main>
     <footer>
-      *** Invoice was created on a computer and is valid without the signature and seal. ***
+      *** Invoice was created from our computer system and it is valid without our signature and seal. ***
     </footer>
   </body>
 </html>

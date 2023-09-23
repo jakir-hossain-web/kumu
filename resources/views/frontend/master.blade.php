@@ -76,6 +76,15 @@
 				/* border-radius: 50px; */
 			}
 
+			#search_btn{
+				background: #031424;
+				transition: .3s;
+			}
+
+			#search_btn:hover .custom_search_icon{
+				color: #ee1c47;
+			}
+
 			.check_individual_div{
 				position: relative;
 			}
@@ -232,7 +241,7 @@
 											<input type="text" id="search_input" value="{{@$_GET['keyword']}}" class="form-control custom-height b-0" placeholder="Search your products..." />
 											<div class="input-group-append">
 												<div class="input-group-text">
-													<button id="search_btn" class="btn bg-white text-danger custom-height rounded px-3 " type="button"><i class="fas fa-search"></i></button>
+													<button id="search_btn" class="btn text-white custom-height px-3 " type="button"><i class="fas fa-search custom_search_icon"></i></button>
 												</div>
 											</div>
 										</div>										
@@ -300,8 +309,8 @@
 								<ul class="nav-menu">
 									<li><a href="{{route('front.home')}}" class="pl-0">Home</a></li>
 									<li><a href="{{route('shop')}}">Shop</a></li>
-									<li><a href="#">About Us</a></li>
-									<li><a href="#">Contact</a></li>
+									<li><a href="{{route('about_us')}}">About Us</a></li>
+									<li><a href="{{route('contact')}}">Contact</a></li>
 								</ul>
 							</div>
 						</div>

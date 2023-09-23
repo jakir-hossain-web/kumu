@@ -4,6 +4,19 @@
     .view_update_status .form-control{
         height: 35px !important;
     }
+    .download_invoice{
+        margin: 0 auto;
+    }
+    .download_invoice a{
+        padding: 15px 50px;
+        display: block;
+        text-align: center;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+    .order_details_top{
+        padding: 1.875rem 1.875rem 0 1.875rem !important;
+    }
 </style>
 
 @section('content')
@@ -35,7 +48,7 @@
     <div class="col-lg-12">
         <div class="card" style="border: 1px solid blue">
             <div class="row">
-                <div class="card-body d-flex justify-content-start">
+                <div class="card-body d-flex justify-content-start order_details_top">
                     <div class="col-lg-4">
                         <h4 class="bg-primary text-white pt-2 pb-2 pl-3" style="border-radius: 12px 12px 0 0">Order by</h4>
                         <div class="d-flex justify-content-start customer_profile_main mt-3">
@@ -116,6 +129,9 @@
                     </div>
                 </div>  
             </div>          
+            <div class="download_invoice">
+                <a class="bg-primary text-white" href="{{route('Download_invoice', substr($view_order_id,1))}}">Download Invoice</a>
+            </div>
         </div>
     </div>
 
@@ -135,9 +151,9 @@
                         <th>Color</th>
                         <th>Size</th>
                         <th>Quantity</th>
-                        <th>Price Per Procuct</th>
-                        <th>Sales Discount Per Procuct</th>
-                        <th>After Discount</th>
+                        <th>Unit Price</th>
+                        <th>Unit Discount</th>
+                        <th>Total</th>
                     </tr>
 
                     @foreach (App\Models\OrderProduct::where('order_id', $view_order_id)->get() as $sl=>$order)
@@ -159,10 +175,10 @@
                 <div class="main d-flex justify-content-end">
                     <div class="col-lg-4 order_details_bottom d-flex justify-content-between">
                         <div class="order_details_bottom_text text-right">
-                            <h6 style="color: #7e7e7e">After Discount =</h6>
+                            <h6 style="color: #7e7e7e">Total Price =</h6>
                             <h6 style="color: #7e7e7e">(-)Coupon Discount =</h6>
                             <h6 style="border-bottom: 1px solid #b1aeae; color: #7e7e7e" class="pb-1">(+)Delivery Charge =</h6>
-                            <h4 style="color: #7e7e7e">Total =</h4>
+                            <h4 style="color: #7e7e7e">Grand Total =</h4>
                         </div>
                         <div class="order_details_bottom_amount text-right">
                             <h6 style="color: #7e7e7e">{{number_format(round($view_sub_total-$view_sales_discount))}}/-</h6>

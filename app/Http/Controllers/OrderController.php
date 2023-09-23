@@ -9,12 +9,23 @@ class OrderController extends Controller
 {
     //
     function order_list(){
-        return view('admin.order.order_list');
+        $order_status = 0;
+        return view('admin.order.order_list',[
+            'order_status'=>$order_status,
+        ]);
+    }
+
+    function search_order_list(Request $request){
+        $order_status = $request->search_order_status;
+        return view('admin.order.order_list',[
+            'order_status'=>$order_status,
+        ]);
     }
 
     function order_status_update(Request $request){
         Order::where('order_id', $request->order_id)->update([
             'order_status'=> $request->order_status,
+            'notification_status'=>1,
         ]);
          return back()->with('order_status_update','Order Status Update Successfully!');
     }
@@ -31,7 +42,6 @@ class OrderController extends Controller
             'view_order_sl_no'=>$view_order_sl_no,
         ]);
     }
-
 
 
 

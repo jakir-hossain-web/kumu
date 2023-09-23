@@ -6,6 +6,7 @@ use App\Models\Catagory;
 use App\Models\Inventory;
 use App\Models\Product;
 use App\Models\OrderProduct;
+use App\Models\CustomerMessage;
 use App\Models\Color;
 use App\Models\Size;
 use App\Models\PassReset;
@@ -139,6 +140,14 @@ class Frontendcontroller extends Controller
         ]);
     }
 
+    function about_us(){
+        return view('frontend.about_us');
+    }
+
+    function contact(){
+        return view('frontend.contact');
+    }
+
     function product_details($slug){
 
         if (Product::where('slug', $slug)->exists()) {
@@ -221,6 +230,39 @@ class Frontendcontroller extends Controller
             'catagories'=>$catagories,
             'catagories_all'=>$catagories_all,
         ]);
+    }
+
+    function contact_message(Request $request){
+
+        $request->validate([
+            'name'=>['required','min:3','regex:/^[a-zA-Z\s]*$/'],
+            'email' => 'required|email:rfc',
+            'message' => 'required',
+        ],[
+            'name.required'=>'Name Field is Empty!',
+            'name.min'=>'Minimum 3 Character Required!',
+            'name.regex'=>'Alphabetic  Character Only!',
+            'email.required'=>'Email Field is Empty!',
+            'message.required'=>'Message Field is Empty!',
+        ]);
+
+        if($request->mobile != null){
+                $request->validate([
+                'mobile' =>'numeric',
+            ],[
+                'mobile.numeric'=>'Digit Only!',
+            ]);
+        }
+
+        CustomerMessage::insert([
+            'name'=>$request->name,
+            'email'=>$request->email,
+            'mobile'=>$request->mobile,
+            'message'=>$request->message,
+            'created_at' => Carbon::now(),
+        ]);
+        return back()->with('customer_message_success','Message Send Successfully!');
+
     }
     
 
