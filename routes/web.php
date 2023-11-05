@@ -18,6 +18,7 @@ use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\SubcatagoryController;
 use App\Http\Controllers\Usercontroller;
+use App\Http\Controllers\Sitecontroller;
 use App\Http\Controllers\WishController;
 use App\Http\Controllers\RoleManagerController;
 use App\Http\Controllers\ReportController;
@@ -137,6 +138,11 @@ Route::post('/contact/message', [Frontendcontroller::class, 'contact_message'])-
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// site info =======
+Route::get('/add_site_info', [Sitecontroller::class, 'add_site_info'])->name('add_site_info');
+Route::get('/edit_site_info', [Sitecontroller::class, 'edit_site_info'])->name('edit_site_info');
+Route::post('/change_site_info', [Sitecontroller::class, 'change_site_info'])->name('change_site_info');
 
 // users =======
 Route::get('/user', [Usercontroller::class, 'user'])->name('user');

@@ -243,6 +243,15 @@
 							<span class="nav-text">Dashboard</span>
 						</a>
                     </li>
+					<li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+							<i class="fa fa-cog"></i>
+							<span class="nav-text">Site Info</span>
+						</a>
+						<ul aria-expanded="false">
+							<li><a href="{{route('add_site_info')}}">Add Site Info</a></li>
+							<li><a href="{{route('edit_site_info')}}">Edit Site Info</a></li>
+						</ul>
+					</li>  
 					@can('user_delete')
 						<li><a class="ai-icon" href="{{route('user')}}" aria-expanded="false">
 								<i class="fa fa-group"></i>
