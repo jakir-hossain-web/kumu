@@ -14,9 +14,10 @@
                     <h4 style="color: #fff">Add Site Info</h4>
                 </div>
                 <div class="card-body">
-                    <form action="" method="POST">
+                    <form action="{{route('add_site_info')}}" method="POST">
                         @csrf
                         <input class="form-control mb-3" type="text" name="site_name" placeholder="Site Name">
+                        <input class="form-control mb-3" type="text" name="site_slogan" placeholder="Site Slogan">
                         <input class="form-control mb-3" type="text" name="site_address" placeholder="Site Address">
                         <input class="form-control mb-3" type="email" name="site_email" placeholder="Site Email">
                         <input class="form-control mb-3" type="text" name="contact_number" placeholder="Contact Number">

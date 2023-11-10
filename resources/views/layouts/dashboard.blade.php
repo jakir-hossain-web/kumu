@@ -248,10 +248,15 @@
 							<span class="nav-text">Site Info</span>
 						</a>
 						<ul aria-expanded="false">
-							<li><a href="{{route('add_site_info')}}">Add Site Info</a></li>
+							<li><a href="{{route('Create_site_info')}}">Site Info</a></li>
 							<li><a href="{{route('edit_site_info')}}">Edit Site Info</a></li>
 						</ul>
 					</li>  
+					<li><a class="ai-icon" href="{{route('edit_site_info')}}" aria-expanded="false">
+							<i class="fa fa-group"></i>
+							<span class="nav-text">Site Info</span>
+						</a>
+					</li> 
 					@can('user_delete')
 						<li><a class="ai-icon" href="{{route('user')}}" aria-expanded="false">
 								<i class="fa fa-group"></i>
