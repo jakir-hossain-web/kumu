@@ -140,9 +140,9 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // site info =======
-Route::get('/add_site_info', [Sitecontroller::class, 'add_site_info'])->name('add_site_info');
-Route::get('/edit_site_info', [Sitecontroller::class, 'edit_site_info'])->name('edit_site_info');
-Route::post('/change_site_info', [Sitecontroller::class, 'change_site_info'])->name('change_site_info');
+Route::get('/site_info', [Sitecontroller::class, 'site_info'])->name('site_info');
+Route::post('/add_site_info', [Sitecontroller::class, 'add_site_info'])->name('add_site_info');
+Route::post('/Update_site_info', [Sitecontroller::class, 'Update_site_info'])->name('Update_site_info');
 
 // users =======
 Route::get('/user', [Usercontroller::class, 'user'])->name('user');

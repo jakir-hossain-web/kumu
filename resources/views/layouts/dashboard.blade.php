@@ -44,6 +44,20 @@
 			padding: 15px 91px 15px 91px;
 			background: #e0e0e0;
 		}
+		.brand-logo .brand_title{
+			font-family: 'Poppins', sans-serif;
+			font-weight: 700;
+			font-size: 28px;
+			position: relative;
+			padding-right: 25px;
+		}
+		.brand_slogan{
+			position: absolute;
+			top: 100%;
+			left: 0;
+			font-weight: 300;
+			font-size: 10px;
+		}
 	</style>
 
 </head>
@@ -71,11 +85,14 @@
         <!--**********************************
             Nav header start
         ***********************************-->
+		@php
+			$site_details = App\Models\SiteInfo::get()->first();
+		@endphp
+
         <div class="nav-header">
             <a href="{{route('home')}}" class="brand-logo">
-                <img class="logo-abbr" src="{{asset('dashboard/images/logo.png')}}" alt="">
-                <img class="logo-compact" src="{{asset('dashboard/images/logo-text.png')}}" alt="">
-                <img class="brand-title" src="{{asset('dashboard/images/logo-text.png')}}" alt="">
+				<img src="{{asset('uploads/site_logo')}}/{{$site_details->site_logo}}" class="brand_logo_img img-fluid rounded mr-2" alt="Site Logo" style="width: 65px"/>
+				<h2 class="brand_title"></span>{{$site_details->site_name}}<span class="brand_slogan">{{$site_details->site_slogan}}</span> </h2>
             </a>
 
             <div class="nav-control">
@@ -242,18 +259,9 @@
 							<i class="flaticon-381-networking"></i>
 							<span class="nav-text">Dashboard</span>
 						</a>
-                    </li>
-					<li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    </li> 
+					<li><a class="ai-icon" href="{{route('site_info')}}" aria-expanded="false">
 							<i class="fa fa-cog"></i>
-							<span class="nav-text">Site Info</span>
-						</a>
-						<ul aria-expanded="false">
-							<li><a href="{{route('Create_site_info')}}">Site Info</a></li>
-							<li><a href="{{route('edit_site_info')}}">Edit Site Info</a></li>
-						</ul>
-					</li>  
-					<li><a class="ai-icon" href="{{route('edit_site_info')}}" aria-expanded="false">
-							<i class="fa fa-group"></i>
 							<span class="nav-text">Site Info</span>
 						</a>
 					</li> 

@@ -124,6 +124,24 @@
 				color: #151515;
                 border: 1px solid #151515;
             }
+
+			.brand_logo{
+				border-radius: 50%;
+			}
+			.brand_name{
+				font-weight: 700;
+				font-size: 30px;
+				color: #031424;
+				position: relative;
+			}
+			.brand_slogan{
+				font-weight: 700;
+				font-size: 12px;
+				color: #9e0020;
+				position: absolute;
+				top: 100%;
+				left: 0;
+			}
 			/* ===== social share css end ===== */
 
 		</style>
@@ -163,12 +181,23 @@
             <!-- Top header  -->
             <!-- ============================================================== -->
 			<!-- Top Header -->
+
+			@php
+				$site_details = App\Models\SiteInfo::get()->first();
+				// get last word of from String =======
+				$brand_name = $site_details->site_name;
+				$explode_text = explode(' ',$brand_name);
+				$last_word = array_pop($explode_text); 
+
+				// Remove Last Word from String ========
+				$text_without_last_word = substr($brand_name, 0, strrpos($brand_name, " "));
+			@endphp
+
 			<div class="py-2 br-bottom">
 				<div class="container">
-					<div class="row">
-						
+					<div class="row">						
 						<div class="col-xl-7 col-lg-6 col-md-6 col-sm-12 hide-ipad">
-							<div class="top_second"><p class="medium text-muted m-0 p-0"><i class="lni lni-phone fs-sm"></i></i> Hotline <a href="#" class="medium text-dark text-underline">0(800) 123-456</a></p></div>
+							<div class="top_second"><p class="medium text-muted m-0 p-0"><i class="lni lni-phone fs-sm"></i></i> Hotline <a href="#" class="medium text-dark text-underline">{{$site_details->contact_number}}</a></p></div>
 						</div>
 						
 						<!-- Right Menu -->
@@ -217,8 +246,7 @@
 									<li><a href="javascript:void(0);" class="dropdown-item medium text-muted"><img src="assets/img/2.jpg" alt="fr" width="16" height="11" /><span>Français</span></a></li>
 								</ul>
 							</div> --}}
-							
-							
+														
 						</div>
 						
 					</div>
@@ -233,7 +261,11 @@
 								<div class="headd-sty-left d-flex align-items-center">
 									<div class="headd-sty-01">
 										<a class="nav-brand py-0" href="{{route('front.home')}}">
-											<img src="{{asset('frontend/img/logo.png')}}" class="logo" alt="" />
+											<img src="{{asset('uploads/site_logo')}}/{{$site_details->site_logo}}" alt="brand_logo" class="brand_logo img-fluid" style="width: 65px"/>
+											<span class="brand_name" style="padding-right: 50px">{{$text_without_last_word}}
+												<span style="color: #b40024">{{$last_word}}</span>
+												<span class="brand_slogan">{{$site_details->site_slogan}}</span>
+											</span>
 										</a>
 									</div>
 									<div class="headd-sty-02 ml-3">
@@ -252,7 +284,7 @@
 										<li>
 											<div class="call d-flex align-items-center text-left">
 												<i class="lni lni-phone fs-xl"></i>
-												<span class="text-muted small ml-3">Call Us Now:<strong class="d-block text-dark fs-md">0(800) 123-456</strong></span>
+												<span class="text-muted small ml-3">Call Us Now:<strong class="d-block text-dark fs-md">{{$site_details->contact_number}}</strong></span>
 											</div>
 										</li>
 										<li>
@@ -394,10 +426,10 @@
 									<img src="assets/img/logo-light.png" class="img-footer small mb-2" alt="" />
 									
 									<div class="address mt-3">
-										3298 Grant Street Longview, TX<br>United Kingdom 75601	
+										{{$site_details->site_address}}	
 									</div>
 									<div class="address mt-3">
-										1-202-555-0106<br>help@shopper.com
+										{{$site_details->contact_number}}<br>{{$site_details->site_email}}
 									</div>
 									<div class="address mt-3">
 										<ul class="list-inline">

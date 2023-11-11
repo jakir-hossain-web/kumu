@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class SiteInfo extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id'];
+
+    function rel_to_user(){
+        return $this->belongsTo(User::class, 'added_by');
+    }
 }
