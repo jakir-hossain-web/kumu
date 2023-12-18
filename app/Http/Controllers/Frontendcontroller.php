@@ -237,12 +237,15 @@ class Frontendcontroller extends Controller
         $request->validate([
             'name'=>['required','min:3','regex:/^[a-zA-Z\s]*$/'],
             'email' => 'required|email:rfc',
+            'mobile' => 'nullable|regex:/^\+?\d+$/',
+            // 'mobile' => 'nullable|regex:/^\d+$/',
             'message' => 'required',
         ],[
             'name.required'=>'Name Field is Empty!',
             'name.min'=>'Minimum 3 Character Required!',
             'name.regex'=>'Alphabetic  Character Only!',
             'email.required'=>'Email Field is Empty!',
+            'mobile.regex' => 'Invalid mobile number format!',
             'message.required'=>'Message Field is Empty!',
         ]);
 

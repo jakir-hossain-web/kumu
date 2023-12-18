@@ -61,10 +61,11 @@
             <div class="card-header bg-primary d-flex">
                 <div class="customer_name">
                     <h3 style="color: #fff">{{$message_info->name}}</h3>
+                    <h6 style="color: #fff">Contact: {{$message_info->mobile}}</h6>
                 </div>
                 <div class="customer_email text-right">
                     <h6 style="color: #fff">{{$message_info->email}}</h6>
-                    <h6 style="color: #fff">{{$message_info->created_at->format('d M,Y')}}</h6>
+                    <p style="color: #fff">{{$message_info->created_at->format('d M,Y')}}</p>
                 </div>
             </div>
             <div class="card-body">
@@ -117,10 +118,10 @@
                     $('.reply_message_err').css('color', 'red');
                     event.preventDefault(); // Prevent the default form submission
                 }
-                else if(length <20){
+                else if(length <10){
                     $('textarea').css('border', '2px solid red');
                     $('textarea').focus();
-                    $('.reply_message_err').html('Minimum 20 character Required!');
+                    $('.reply_message_err').html('Minimum 10 character Required!');
                     $('.reply_message_err').css('color', 'red');
                     event.preventDefault(); // Prevent the default form submission
                 }

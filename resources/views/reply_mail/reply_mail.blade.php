@@ -31,7 +31,7 @@
     <h3>Hello <span>{{$customer_name}},</span></h3>
     <p>We received one message/query/idea/complain from you <span>{{$customer_email}}</span> as on <span>{{$message_date->format('d M,Y')}}</span>.</p>
     <p>Your message was-</p>
-    <p style="padding: 10px 30px">"{{$customer_message}}"</p>
+    <p style="padding: 3px 25px">"{{$customer_message}}"</p>
     <p>{{$reply_message}}</p>
 
     <h4 style="padding-bottom: 15px">Thank you.</h4>

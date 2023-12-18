@@ -145,10 +145,10 @@
                     $(this).closest('tr').find('.reply_message_err').css('color', 'red');
                     event.preventDefault(); // Prevent the default form submission
                 }
-                else if(length <20){
+                else if(length <10){
                     $(this).closest('tr').find('textarea').css('border', '2px solid red');
                     $(this).closest('tr').find('textarea').focus();
-                    $(this).closest('tr').find('.reply_message_err').html('Minimum 20 character Required!');
+                    $(this).closest('tr').find('.reply_message_err').html('Minimum 10 character Required!');
                     $(this).closest('tr').find('.reply_message_err').css('color', 'red');
                     event.preventDefault(); // Prevent the default form submission
                 }

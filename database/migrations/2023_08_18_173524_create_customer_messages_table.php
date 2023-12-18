@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email');
-            $table->integer('mobile')->nullable();
+            $table->string('mobile')->nullable();
             $table->longText('message');
             $table->longText('your_reply')->nullable();
             $table->integer('notification_status')->default(0);
